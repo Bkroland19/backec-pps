@@ -1,0 +1,9 @@
+swagger: "2.0"
+info:
+     description: API for managing Point Prevalence Survey data with PostgreSQL integration
+     title: Point Prevalence Survey API
+     version: 1.0
+host: localhost:8080
+basePath: /
+paths: {}
+definitions: {}

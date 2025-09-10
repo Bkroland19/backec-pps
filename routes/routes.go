@@ -1,0 +1,72 @@
+package routes
+
+import (
+	"point-prevalence-survey/handlers"
+
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+func SetupRoutes(r *gin.Engine) {
+	// Initialize handlers
+	patientHandler := handlers.NewPatientHandler()
+	uploadHandler := handlers.NewUploadHandler()
+	antibioticHandler := handlers.NewAntibioticHandler()
+	specimenHandler := handlers.NewSpecimenHandler()
+
+	// API v1 routes
+	v1 := r.Group("/api/v1")
+	{
+		// Patient routes
+		patients := v1.Group("/patients")
+		{
+			patients.GET("", patientHandler.GetPatients)
+			patients.GET("/stats", patientHandler.GetPatientStats)
+			patients.GET("/:id", patientHandler.GetPatient)
+			patients.GET("/:id/antibiotics", patientHandler.GetPatientAntibiotics)
+			patients.GET("/:id/indications", patientHandler.GetPatientIndications)
+			patients.GET("/:id/optional-vars", patientHandler.GetPatientOptionalVars)
+			patients.GET("/:id/specimens", patientHandler.GetPatientSpecimens)
+		}
+
+		// Antibiotic routes
+		antibiotics := v1.Group("/antibiotics")
+		{
+			antibiotics.GET("", antibioticHandler.GetAntibiotics)
+			antibiotics.GET("/stats", antibioticHandler.GetAntibioticStats)
+			antibiotics.GET("/:id", antibioticHandler.GetAntibiotic)
+			antibiotics.GET("/patient/:patient_id", antibioticHandler.GetAntibioticUsageByPatient)
+		}
+
+		// Specimen routes
+		specimens := v1.Group("/specimens")
+		{
+			specimens.GET("", specimenHandler.GetSpecimens)
+			specimens.GET("/stats", specimenHandler.GetSpecimenStats)
+			specimens.GET("/:id", specimenHandler.GetSpecimen)
+			specimens.GET("/patient/:patient_id", specimenHandler.GetSpecimensByPatient)
+		}
+
+		// Upload routes
+		upload := v1.Group("/upload")
+		{
+			upload.POST("/patients", uploadHandler.UploadPatients)
+			upload.POST("/antibiotics", uploadHandler.UploadAntibiotics)
+			upload.POST("/indications", uploadHandler.UploadIndications)
+			upload.POST("/optional-vars", uploadHandler.UploadOptionalVars)
+			upload.POST("/specimens", uploadHandler.UploadSpecimens)
+		}
+	}
+
+	// Health check endpoint
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":  "ok",
+			"message": "Point Prevalence Survey API is running",
+		})
+	})
+
+	// Swagger documentation
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
