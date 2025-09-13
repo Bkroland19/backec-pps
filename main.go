@@ -4,6 +4,7 @@ import (
 	"log"
 	"point-prevalence-survey/config"
 	"point-prevalence-survey/database"
+	_ "point-prevalence-survey/docs"
 	"point-prevalence-survey/routes"
 
 	"github.com/gin-gonic/gin"
@@ -49,7 +50,7 @@ func main() {
 	port := cfg.GetPort()
 	log.Printf("Server starting on port %s", port)
 	log.Printf("Swagger documentation available at http://localhost%s/swagger/index.html", port)
-	
+
 	if err := r.Run(port); err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
