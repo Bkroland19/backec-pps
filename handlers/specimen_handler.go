@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type SpecimenHandler struct {
@@ -106,7 +107,7 @@ func (h *SpecimenHandler) GetSpecimenStats(c *gin.Context) {
 			Type  string `json:"type"`
 			Count int64  `json:"count"`
 		} `json:"by_type"`
-		ByResult       []struct {
+		ByResult []struct {
 			Result string `json:"result"`
 			Count  int64  `json:"count"`
 		} `json:"by_result"`
@@ -149,7 +150,7 @@ func (h *SpecimenHandler) GetSpecimenStats(c *gin.Context) {
 // @Router /api/v1/specimens/patient/{patient_id} [get]
 func (h *SpecimenHandler) GetSpecimensByPatient(c *gin.Context) {
 	patientID := c.Param("patient_id")
-	
+
 	var patient models.Patient
 	if err := h.db.First(&patient, "key = ?", patientID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})

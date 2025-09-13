@@ -13,6 +13,7 @@ func SetupRoutes(r *gin.Engine) {
 	patientHandler := handlers.NewPatientHandler()
 	uploadHandler := handlers.NewUploadHandler()
 	antibioticHandler := handlers.NewAntibioticHandler()
+	antibioticDetailsHandler := handlers.NewAntibioticDetailsHandler()
 	specimenHandler := handlers.NewSpecimenHandler()
 
 	// API v1 routes
@@ -39,6 +40,18 @@ func SetupRoutes(r *gin.Engine) {
 			antibiotics.GET("/patient/:patient_id", antibioticHandler.GetAntibioticUsageByPatient)
 		}
 
+		// Antibiotic Details routes
+		antibioticDetails := v1.Group("/antibiotic-details")
+		{
+			antibioticDetails.GET("", antibioticDetailsHandler.GetAntibioticDetails)
+			antibioticDetails.GET("/stats", antibioticDetailsHandler.GetAntibioticDetailsStats)
+			antibioticDetails.GET("/:id", antibioticDetailsHandler.GetAntibioticDetailsByID)
+			antibioticDetails.GET("/parent/:parent_key", antibioticDetailsHandler.GetAntibioticDetailsByParentKey)
+			antibioticDetails.POST("", antibioticDetailsHandler.CreateAntibioticDetails)
+			antibioticDetails.PUT("/:id", antibioticDetailsHandler.UpdateAntibioticDetails)
+			antibioticDetails.DELETE("/:id", antibioticDetailsHandler.DeleteAntibioticDetails)
+		}
+
 		// Specimen routes
 		specimens := v1.Group("/specimens")
 		{
@@ -53,6 +66,7 @@ func SetupRoutes(r *gin.Engine) {
 		{
 			upload.POST("/patients", uploadHandler.UploadPatients)
 			upload.POST("/antibiotics", uploadHandler.UploadAntibiotics)
+			upload.POST("/antibiotic-details", uploadHandler.UploadAntibioticDetails)
 			upload.POST("/indications", uploadHandler.UploadIndications)
 			upload.POST("/optional-vars", uploadHandler.UploadOptionalVars)
 			upload.POST("/specimens", uploadHandler.UploadSpecimens)

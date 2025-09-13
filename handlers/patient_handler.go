@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type PatientHandler struct {
@@ -46,6 +47,15 @@ func (h *PatientHandler) GetPatients(c *gin.Context) {
 	}
 	if facility := c.Query("facility"); facility != "" {
 		query = query.Where("facility = ?", facility)
+	}
+	if facilityLevel := c.Query("facility_level"); facilityLevel != "" {
+		query = query.Where("level_of_care = ?", facilityLevel)
+	}
+	if ownership := c.Query("ownership"); ownership != "" {
+		query = query.Where("ownership = ?", ownership)
+	}
+	if subcounty := c.Query("subcounty"); subcounty != "" {
+		query = query.Where("subcounty = ?", subcounty)
 	}
 	if ward := c.Query("ward"); ward != "" {
 		query = query.Where("ward_name = ?", ward)

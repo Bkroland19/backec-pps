@@ -1,12 +1,1072 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"description": "API for managing Point Prevalence Survey data with PostgreSQL integration",
-		"title": "Point Prevalence Survey API",
-		"version": "1.0"
-	},
-	"host": "localhost:8080",
-	"basePath": "/",
-	"paths": {},
-	"definitions": {}
+    "swagger": "2.0",
+    "info": {
+        "description": "API for managing Point Prevalence Survey data with PostgreSQL integration",
+        "title": "Point Prevalence Survey API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/antibiotics": {
+            "get": {
+                "description": "Get a list of antibiotics with optional filtering by class, classification, etc.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotics"
+                ],
+                "summary": "Get all antibiotics with optional filtering",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by antibiotic class",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by antibiotic aware classification",
+                        "name": "classification",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by patient ID",
+                        "name": "patient_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Items per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/antibiotics/patient/{patient_id}": {
+            "get": {
+                "description": "Get detailed antibiotic usage information for a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotics"
+                ],
+                "summary": "Get antibiotic usage by patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "patient_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/antibiotics/stats": {
+            "get": {
+                "description": "Get aggregated statistics about antibiotics usage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotics"
+                ],
+                "summary": "Get antibiotic statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/antibiotics/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific antibiotic",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotics"
+                ],
+                "summary": "Get a specific antibiotic by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Antibiotic ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Antibiotic"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients": {
+            "get": {
+                "description": "Get a list of patients with optional filtering by region, district, facility, etc.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get all patients with optional filtering",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by region",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by district",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by facility",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by ward name",
+                        "name": "ward",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Items per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/stats": {
+            "get": {
+                "description": "Get aggregated statistics about patients",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get patient statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific patient including all related data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get a specific patient by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Patient"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/{id}/antibiotics": {
+            "get": {
+                "description": "Get all antibiotics associated with a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get antibiotics for a specific patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Antibiotic"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/{id}/indications": {
+            "get": {
+                "description": "Get all indications associated with a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get indications for a specific patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Indication"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/{id}/optional-vars": {
+            "get": {
+                "description": "Get all optional variables associated with a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get optional variables for a specific patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.OptionalVar"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/patients/{id}/specimens": {
+            "get": {
+                "description": "Get all specimens associated with a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patients"
+                ],
+                "summary": "Get specimens for a specific patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Specimen"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/specimens": {
+            "get": {
+                "description": "Get a list of specimens with optional filtering by type, result, etc.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "specimens"
+                ],
+                "summary": "Get all specimens with optional filtering",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by specimen type",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by culture result",
+                        "name": "result",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by patient ID",
+                        "name": "patient_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Items per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/specimens/patient/{patient_id}": {
+            "get": {
+                "description": "Get all specimens associated with a specific patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "specimens"
+                ],
+                "summary": "Get specimens by patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "patient_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/specimens/stats": {
+            "get": {
+                "description": "Get aggregated statistics about specimens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "specimens"
+                ],
+                "summary": "Get specimen statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/specimens/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific specimen",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "specimens"
+                ],
+                "summary": "Get a specific specimen by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Specimen ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Specimen"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/antibiotics": {
+            "post": {
+                "description": "Upload and import antibiotics data from CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload antibiotics CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing antibiotics data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/indications": {
+            "post": {
+                "description": "Upload and import indications data from CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload indications CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing indications data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/optional-vars": {
+            "post": {
+                "description": "Upload and import optional variables data from CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload optional variables CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing optional variables data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/patients": {
+            "post": {
+                "description": "Upload and import patients data from CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload patients CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing patients data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/specimens": {
+            "post": {
+                "description": "Upload and import specimens data from CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload specimens CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing specimens data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Antibiotic": {
+            "type": "object",
+            "properties": {
+                "administration_route": {
+                    "type": "string"
+                },
+                "antibiotic_aware_classification": {
+                    "type": "string"
+                },
+                "antibiotic_class": {
+                    "type": "string"
+                },
+                "antibiotic_inn_name": {
+                    "type": "string"
+                },
+                "antibiotic_notes": {
+                    "type": "string"
+                },
+                "antibiotic_written_in_inn": {
+                    "type": "string"
+                },
+                "atc_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "other_antibiotic": {
+                    "type": "string"
+                },
+                "parent_key": {
+                    "type": "string"
+                },
+                "start_date_antibiotic": {
+                    "type": "string"
+                },
+                "unit_dose": {
+                    "type": "number"
+                },
+                "unit_dose_frequency": {
+                    "type": "string"
+                },
+                "unit_dose_measure_unit": {
+                    "type": "string"
+                },
+                "unit_doses_combination": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Indication": {
+            "type": "object",
+            "properties": {
+                "culture_sample_taken": {
+                    "type": "string"
+                },
+                "diagnosis": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "indication_type": {
+                    "type": "string"
+                },
+                "parent_key": {
+                    "type": "string"
+                },
+                "reason_in_notes": {
+                    "type": "string"
+                },
+                "start_date_treatment": {
+                    "type": "string"
+                },
+                "surg_proph_duration": {
+                    "type": "string"
+                },
+                "surg_proph_site": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OptionalVar": {
+            "type": "object",
+            "properties": {
+                "guidelines_compliance": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "intravenous_type": {
+                    "type": "string"
+                },
+                "missed_doses_reason": {
+                    "type": "string"
+                },
+                "number_missed_doses": {
+                    "type": "integer"
+                },
+                "oral_switch": {
+                    "type": "string"
+                },
+                "parent_key": {
+                    "type": "string"
+                },
+                "prescriber_type": {
+                    "type": "string"
+                },
+                "treatment_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Patient": {
+            "type": "object",
+            "properties": {
+                "additional_comment": {
+                    "type": "string"
+                },
+                "admission_date": {
+                    "type": "string"
+                },
+                "age_months": {
+                    "type": "integer"
+                },
+                "age_years": {
+                    "type": "integer"
+                },
+                "antibiotics": {
+                    "description": "Relationships",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Antibiotic"
+                    }
+                },
+                "attachments_expected": {
+                    "type": "string"
+                },
+                "attachments_present": {
+                    "type": "string"
+                },
+                "central_vascular_catheter": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "diabetes": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "edits": {
+                    "type": "string"
+                },
+                "facility": {
+                    "type": "string"
+                },
+                "form_version": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "hiv_cd4_count": {
+                    "type": "string"
+                },
+                "hiv_on_art": {
+                    "type": "string"
+                },
+                "hiv_status": {
+                    "type": "string"
+                },
+                "hiv_viral_load": {
+                    "type": "string"
+                },
+                "hospitalization_90_days": {
+                    "type": "string"
+                },
+                "hypertension": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "indications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Indication"
+                    }
+                },
+                "instance_id": {
+                    "type": "string"
+                },
+                "intubation": {
+                    "type": "string"
+                },
+                "is_the_patient_an_infant": {
+                    "type": "string"
+                },
+                "level_of_care": {
+                    "type": "string"
+                },
+                "malaria_status": {
+                    "type": "string"
+                },
+                "malnutrition_status": {
+                    "type": "string"
+                },
+                "optional_vars": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OptionalVar"
+                    }
+                },
+                "ownership": {
+                    "type": "string"
+                },
+                "patient_code": {
+                    "type": "string"
+                },
+                "patient_initials": {
+                    "type": "string"
+                },
+                "patient_number_antibiotics": {
+                    "type": "integer"
+                },
+                "patient_on_antibiotic": {
+                    "type": "string"
+                },
+                "peripheral_vascular_catheter": {
+                    "type": "string"
+                },
+                "pre_term_birth": {
+                    "type": "string"
+                },
+                "rand_num": {
+                    "type": "integer"
+                },
+                "referred_from": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "review_state": {
+                    "type": "string"
+                },
+                "show_code": {
+                    "type": "string"
+                },
+                "specimens": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Specimen"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subcounty": {
+                    "type": "string"
+                },
+                "submission_date": {
+                    "type": "string"
+                },
+                "submitter_id": {
+                    "type": "string"
+                },
+                "submitter_name": {
+                    "type": "string"
+                },
+                "surgery_since_admission": {
+                    "type": "string"
+                },
+                "survey_date": {
+                    "type": "string"
+                },
+                "tuberculosis_status": {
+                    "type": "string"
+                },
+                "type_surgery_since_admission": {
+                    "type": "string"
+                },
+                "urinary_catheter": {
+                    "type": "string"
+                },
+                "ward_eligible_patients": {
+                    "type": "integer"
+                },
+                "ward_name": {
+                    "type": "string"
+                },
+                "ward_total_patients": {
+                    "type": "integer"
+                },
+                "weight": {
+                    "type": "number"
+                },
+                "weight_birth_kg": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Specimen": {
+            "type": "object",
+            "properties": {
+                "antibiotic_susceptibility_test_results": {
+                    "type": "string"
+                },
+                "culture_result": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "microorganism": {
+                    "type": "string"
+                },
+                "parent_key": {
+                    "type": "string"
+                },
+                "resistant_phenotype": {
+                    "type": "string"
+                },
+                "specimen_type": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

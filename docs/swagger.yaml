@@ -1,9 +1,716 @@
-swagger: "2.0"
-info:
-     description: API for managing Point Prevalence Survey data with PostgreSQL integration
-     title: Point Prevalence Survey API
-     version: 1.0
-host: localhost:8080
 basePath: /
-paths: {}
-definitions: {}
+definitions:
+  models.Antibiotic:
+    properties:
+      administration_route:
+        type: string
+      antibiotic_aware_classification:
+        type: string
+      antibiotic_class:
+        type: string
+      antibiotic_inn_name:
+        type: string
+      antibiotic_notes:
+        type: string
+      antibiotic_written_in_inn:
+        type: string
+      atc_code:
+        type: string
+      id:
+        type: string
+      other_antibiotic:
+        type: string
+      parent_key:
+        type: string
+      start_date_antibiotic:
+        type: string
+      unit_dose:
+        type: number
+      unit_dose_frequency:
+        type: string
+      unit_dose_measure_unit:
+        type: string
+      unit_doses_combination:
+        type: string
+    type: object
+  models.Indication:
+    properties:
+      culture_sample_taken:
+        type: string
+      diagnosis:
+        type: string
+      id:
+        type: string
+      indication_type:
+        type: string
+      parent_key:
+        type: string
+      reason_in_notes:
+        type: string
+      start_date_treatment:
+        type: string
+      surg_proph_duration:
+        type: string
+      surg_proph_site:
+        type: string
+    type: object
+  models.OptionalVar:
+    properties:
+      guidelines_compliance:
+        type: string
+      id:
+        type: string
+      intravenous_type:
+        type: string
+      missed_doses_reason:
+        type: string
+      number_missed_doses:
+        type: integer
+      oral_switch:
+        type: string
+      parent_key:
+        type: string
+      prescriber_type:
+        type: string
+      treatment_type:
+        type: string
+    type: object
+  models.Patient:
+    properties:
+      additional_comment:
+        type: string
+      admission_date:
+        type: string
+      age_months:
+        type: integer
+      age_years:
+        type: integer
+      antibiotics:
+        description: Relationships
+        items:
+          $ref: '#/definitions/models.Antibiotic'
+        type: array
+      attachments_expected:
+        type: string
+      attachments_present:
+        type: string
+      central_vascular_catheter:
+        type: string
+      code:
+        type: string
+      comments:
+        type: string
+      device_id:
+        type: string
+      diabetes:
+        type: string
+      district:
+        type: string
+      edits:
+        type: string
+      facility:
+        type: string
+      form_version:
+        type: string
+      gender:
+        type: string
+      hiv_cd4_count:
+        type: string
+      hiv_on_art:
+        type: string
+      hiv_status:
+        type: string
+      hiv_viral_load:
+        type: string
+      hospitalization_90_days:
+        type: string
+      hypertension:
+        type: string
+      id:
+        type: string
+      indications:
+        items:
+          $ref: '#/definitions/models.Indication'
+        type: array
+      instance_id:
+        type: string
+      intubation:
+        type: string
+      is_the_patient_an_infant:
+        type: string
+      level_of_care:
+        type: string
+      malaria_status:
+        type: string
+      malnutrition_status:
+        type: string
+      optional_vars:
+        items:
+          $ref: '#/definitions/models.OptionalVar'
+        type: array
+      ownership:
+        type: string
+      patient_code:
+        type: string
+      patient_initials:
+        type: string
+      patient_number_antibiotics:
+        type: integer
+      patient_on_antibiotic:
+        type: string
+      peripheral_vascular_catheter:
+        type: string
+      pre_term_birth:
+        type: string
+      rand_num:
+        type: integer
+      referred_from:
+        type: string
+      region:
+        type: string
+      review_state:
+        type: string
+      show_code:
+        type: string
+      specimens:
+        items:
+          $ref: '#/definitions/models.Specimen'
+        type: array
+      status:
+        type: string
+      subcounty:
+        type: string
+      submission_date:
+        type: string
+      submitter_id:
+        type: string
+      submitter_name:
+        type: string
+      surgery_since_admission:
+        type: string
+      survey_date:
+        type: string
+      tuberculosis_status:
+        type: string
+      type_surgery_since_admission:
+        type: string
+      urinary_catheter:
+        type: string
+      ward_eligible_patients:
+        type: integer
+      ward_name:
+        type: string
+      ward_total_patients:
+        type: integer
+      weight:
+        type: number
+      weight_birth_kg:
+        type: number
+    type: object
+  models.Specimen:
+    properties:
+      antibiotic_susceptibility_test_results:
+        type: string
+      culture_result:
+        type: string
+      id:
+        type: string
+      microorganism:
+        type: string
+      parent_key:
+        type: string
+      resistant_phenotype:
+        type: string
+      specimen_type:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for managing Point Prevalence Survey data with PostgreSQL integration
+  title: Point Prevalence Survey API
+  version: "1.0"
+paths:
+  /api/v1/antibiotics:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of antibiotics with optional filtering by class, classification,
+        etc.
+      parameters:
+      - description: Filter by antibiotic class
+        in: query
+        name: class
+        type: string
+      - description: Filter by antibiotic aware classification
+        in: query
+        name: classification
+        type: string
+      - description: Filter by patient ID
+        in: query
+        name: patient_id
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all antibiotics with optional filtering
+      tags:
+      - antibiotics
+  /api/v1/antibiotics/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific antibiotic
+      parameters:
+      - description: Antibiotic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Antibiotic'
+      summary: Get a specific antibiotic by ID
+      tags:
+      - antibiotics
+  /api/v1/antibiotics/patient/{patient_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed antibiotic usage information for a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: patient_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get antibiotic usage by patient
+      tags:
+      - antibiotics
+  /api/v1/antibiotics/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get aggregated statistics about antibiotics usage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get antibiotic statistics
+      tags:
+      - antibiotics
+  /api/v1/patients:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of patients with optional filtering by region, district,
+        facility, etc.
+      parameters:
+      - description: Filter by region
+        in: query
+        name: region
+        type: string
+      - description: Filter by district
+        in: query
+        name: district
+        type: string
+      - description: Filter by facility
+        in: query
+        name: facility
+        type: string
+      - description: Filter by ward name
+        in: query
+        name: ward
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all patients with optional filtering
+      tags:
+      - patients
+  /api/v1/patients/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific patient including all
+        related data
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Patient'
+      summary: Get a specific patient by ID
+      tags:
+      - patients
+  /api/v1/patients/{id}/antibiotics:
+    get:
+      consumes:
+      - application/json
+      description: Get all antibiotics associated with a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Antibiotic'
+            type: array
+      summary: Get antibiotics for a specific patient
+      tags:
+      - patients
+  /api/v1/patients/{id}/indications:
+    get:
+      consumes:
+      - application/json
+      description: Get all indications associated with a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Indication'
+            type: array
+      summary: Get indications for a specific patient
+      tags:
+      - patients
+  /api/v1/patients/{id}/optional-vars:
+    get:
+      consumes:
+      - application/json
+      description: Get all optional variables associated with a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.OptionalVar'
+            type: array
+      summary: Get optional variables for a specific patient
+      tags:
+      - patients
+  /api/v1/patients/{id}/specimens:
+    get:
+      consumes:
+      - application/json
+      description: Get all specimens associated with a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Specimen'
+            type: array
+      summary: Get specimens for a specific patient
+      tags:
+      - patients
+  /api/v1/patients/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get aggregated statistics about patients
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get patient statistics
+      tags:
+      - patients
+  /api/v1/specimens:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of specimens with optional filtering by type, result,
+        etc.
+      parameters:
+      - description: Filter by specimen type
+        in: query
+        name: type
+        type: string
+      - description: Filter by culture result
+        in: query
+        name: result
+        type: string
+      - description: Filter by patient ID
+        in: query
+        name: patient_id
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all specimens with optional filtering
+      tags:
+      - specimens
+  /api/v1/specimens/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific specimen
+      parameters:
+      - description: Specimen ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Specimen'
+      summary: Get a specific specimen by ID
+      tags:
+      - specimens
+  /api/v1/specimens/patient/{patient_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all specimens associated with a specific patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: patient_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get specimens by patient
+      tags:
+      - specimens
+  /api/v1/specimens/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get aggregated statistics about specimens
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get specimen statistics
+      tags:
+      - specimens
+  /api/v1/upload/antibiotics:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload and import antibiotics data from CSV file
+      parameters:
+      - description: CSV file containing antibiotics data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload antibiotics CSV file
+      tags:
+      - upload
+  /api/v1/upload/indications:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload and import indications data from CSV file
+      parameters:
+      - description: CSV file containing indications data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload indications CSV file
+      tags:
+      - upload
+  /api/v1/upload/optional-vars:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload and import optional variables data from CSV file
+      parameters:
+      - description: CSV file containing optional variables data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload optional variables CSV file
+      tags:
+      - upload
+  /api/v1/upload/patients:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload and import patients data from CSV file
+      parameters:
+      - description: CSV file containing patients data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload patients CSV file
+      tags:
+      - upload
+  /api/v1/upload/specimens:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload and import specimens data from CSV file
+      parameters:
+      - description: CSV file containing specimens data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload specimens CSV file
+      tags:
+      - upload
+swagger: "2.0"

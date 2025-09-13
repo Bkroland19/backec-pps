@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type AntibioticHandler struct {
@@ -101,20 +102,20 @@ func (h *AntibioticHandler) GetAntibiotic(c *gin.Context) {
 // @Router /api/v1/antibiotics/stats [get]
 func (h *AntibioticHandler) GetAntibioticStats(c *gin.Context) {
 	var stats struct {
-		TotalAntibiotics     int64 `json:"total_antibiotics"`
-		ByClass              []struct {
+		TotalAntibiotics int64 `json:"total_antibiotics"`
+		ByClass          []struct {
 			Class string `json:"class"`
 			Count int64  `json:"count"`
 		} `json:"by_class"`
-		ByClassification      []struct {
+		ByClassification []struct {
 			Classification string `json:"classification"`
 			Count          int64  `json:"count"`
 		} `json:"by_classification"`
-		ByRoute               []struct {
+		ByRoute []struct {
 			Route string `json:"route"`
 			Count int64  `json:"count"`
 		} `json:"by_route"`
-		ByFrequency           []struct {
+		ByFrequency []struct {
 			Frequency string `json:"frequency"`
 			Count     int64  `json:"count"`
 		} `json:"by_frequency"`
@@ -149,7 +150,7 @@ func (h *AntibioticHandler) GetAntibioticStats(c *gin.Context) {
 // @Router /api/v1/antibiotics/patient/{patient_id} [get]
 func (h *AntibioticHandler) GetAntibioticUsageByPatient(c *gin.Context) {
 	patientID := c.Param("patient_id")
-	
+
 	var patient models.Patient
 	if err := h.db.First(&patient, "key = ?", patientID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})
