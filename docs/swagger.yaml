@@ -1,5 +1,55 @@
 basePath: /
 definitions:
+  handlers.PPSIndicators:
+    properties:
+      average_antibiotics_per_patient:
+        type: number
+      missed_dose_reasons:
+        additionalProperties:
+          type: integer
+        description: Light Purple Section - Missed Dose Reasons
+        type: object
+      percentage_appropriate_diagnosis:
+        type: number
+      percentage_culture_based_prescriptions:
+        type: number
+      percentage_encounter_with_antibiotic:
+        description: Pink Section - Encounter Metrics
+        type: number
+      percentage_generic_prescriptions:
+        description: Light Green Section - Generic Name Metrics
+        type: number
+      percentage_guideline_compliant:
+        type: number
+      percentage_injectable_prescriptions:
+        description: Light Blue Section - Injectable Metrics
+        type: number
+      total_antibiotics_prescribed:
+        description: Grey/White Section - Basic Metrics
+        type: integer
+      total_appropriate_diagnosis:
+        description: Orange Section - Appropriate Diagnosis
+        type: integer
+      total_culture_based_prescriptions:
+        description: Dark Green Section - Culture and Sensitivity
+        type: integer
+      total_culture_samples_taken:
+        type: integer
+      total_generic_prescriptions:
+        type: integer
+      total_guideline_compliant:
+        description: Yellow Section - Treatment Guidelines
+        type: integer
+      total_injectable_prescriptions:
+        type: integer
+      total_missed_doses:
+        description: Purple Section - Missed Doses
+        type: integer
+      total_patients_on_ward:
+        type: integer
+      total_patients_with_antibiotics:
+        type: integer
+    type: object
   models.Antibiotic:
     properties:
       administration_route:
@@ -31,6 +81,27 @@ definitions:
       unit_dose_measure_unit:
         type: string
       unit_doses_combination:
+        type: string
+    type: object
+  models.AntibioticDetails:
+    properties:
+      guideline:
+        type: string
+      id:
+        type: string
+      intraveno:
+        type: string
+      missed_dose:
+        type: string
+      number_missed:
+        type: string
+      oral_switch:
+        type: string
+      parent_key:
+        type: string
+      prescriber:
+        type: string
+      treatment:
         type: string
     type: object
   models.Indication:
@@ -231,6 +302,220 @@ info:
   title: Point Prevalence Survey API
   version: "1.0"
 paths:
+  /antibiotic-details:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all antibiotic details from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AntibioticDetails'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all antibiotic details
+      tags:
+      - antibiotic-details
+    post:
+      consumes:
+      - application/json
+      description: Create a new antibiotic detail record
+      parameters:
+      - description: Antibiotic Details
+        in: body
+        name: antibioticDetails
+        required: true
+        schema:
+          $ref: '#/definitions/models.AntibioticDetails'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AntibioticDetails'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create antibiotic detail
+      tags:
+      - antibiotic-details
+  /antibiotic-details/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an antibiotic detail record
+      parameters:
+      - description: Antibiotic Detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete antibiotic detail
+      tags:
+      - antibiotic-details
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a specific antibiotic detail by its ID
+      parameters:
+      - description: Antibiotic Detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AntibioticDetails'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get antibiotic detail by ID
+      tags:
+      - antibiotic-details
+    put:
+      consumes:
+      - application/json
+      description: Update an existing antibiotic detail record
+      parameters:
+      - description: Antibiotic Detail ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Antibiotic Details
+        in: body
+        name: antibioticDetails
+        required: true
+        schema:
+          $ref: '#/definitions/models.AntibioticDetails'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AntibioticDetails'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update antibiotic detail
+      tags:
+      - antibiotic-details
+  /antibiotic-details/parent/{parent_key}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve antibiotic details for a specific parent patient
+      parameters:
+      - description: Parent Key
+        in: path
+        name: parent_key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.AntibioticDetails'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get antibiotic details by parent key
+      tags:
+      - antibiotic-details
+  /antibiotic-details/stats:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve statistics about antibiotic details in the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get antibiotic details statistics
+      tags:
+      - antibiotic-details
   /api/v1/antibiotics:
     get:
       consumes:
@@ -504,6 +789,225 @@ paths:
       summary: Get patient statistics
       tags:
       - patients
+  /api/v1/pps/basic-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate basic Point Prevalence Survey metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get basic PPS metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/culture-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate culture and sensitivity metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get culture and sensitivity metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/diagnosis-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate appropriate diagnosis metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get appropriate diagnosis metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/generic-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate generic name antibiotic prescription metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get generic name prescription metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/guideline-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate treatment guideline compliance metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get treatment guideline compliance metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/indicators:
+    get:
+      consumes:
+      - application/json
+      description: Calculate and return all Point Prevalence Survey indicators
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.PPSIndicators'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all PPS indicators
+      tags:
+      - pps-calculations
+  /api/v1/pps/injectable-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate injectable antibiotic prescription metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get injectable antibiotic metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/missed-dose-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate missed dose metrics and reasons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get missed dose metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/oral-switch-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate oral switch metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get oral switch metrics
+      tags:
+      - pps-calculations
+  /api/v1/pps/prescriber-metrics:
+    get:
+      consumes:
+      - application/json
+      description: Calculate prescriber-related metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get prescriber metrics
+      tags:
+      - pps-calculations
   /api/v1/specimens:
     get:
       consumes:
@@ -603,6 +1107,28 @@ paths:
       summary: Get specimen statistics
       tags:
       - specimens
+  /api/v1/upload/antibiotic-details:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a CSV file containing antibiotic details data
+      parameters:
+      - description: CSV file containing antibiotic details data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Upload antibiotic details CSV file
+      tags:
+      - upload
   /api/v1/upload/antibiotics:
     post:
       consumes:

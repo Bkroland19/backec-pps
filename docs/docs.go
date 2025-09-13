@@ -15,6 +15,329 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/antibiotic-details": {
+            "get": {
+                "description": "Retrieve all antibiotic details from the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Get all antibiotic details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AntibioticDetails"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new antibiotic detail record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Create antibiotic detail",
+                "parameters": [
+                    {
+                        "description": "Antibiotic Details",
+                        "name": "antibioticDetails",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AntibioticDetails"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.AntibioticDetails"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/antibiotic-details/parent/{parent_key}": {
+            "get": {
+                "description": "Retrieve antibiotic details for a specific parent patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Get antibiotic details by parent key",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Parent Key",
+                        "name": "parent_key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AntibioticDetails"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/antibiotic-details/stats": {
+            "get": {
+                "description": "Retrieve statistics about antibiotic details in the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Get antibiotic details statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/antibiotic-details/{id}": {
+            "get": {
+                "description": "Retrieve a specific antibiotic detail by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Get antibiotic detail by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Antibiotic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AntibioticDetails"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an existing antibiotic detail record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Update antibiotic detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Antibiotic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Antibiotic Details",
+                        "name": "antibioticDetails",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AntibioticDetails"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AntibioticDetails"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an antibiotic detail record",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "antibiotic-details"
+                ],
+                "summary": "Delete antibiotic detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Antibiotic Detail ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/antibiotics": {
             "get": {
                 "description": "Get a list of antibiotics with optional filtering by class, classification, etc.",
@@ -422,6 +745,335 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/pps/basic-metrics": {
+            "get": {
+                "description": "Calculate basic Point Prevalence Survey metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get basic PPS metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/culture-metrics": {
+            "get": {
+                "description": "Calculate culture and sensitivity metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get culture and sensitivity metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/diagnosis-metrics": {
+            "get": {
+                "description": "Calculate appropriate diagnosis metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get appropriate diagnosis metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/generic-metrics": {
+            "get": {
+                "description": "Calculate generic name antibiotic prescription metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get generic name prescription metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/guideline-metrics": {
+            "get": {
+                "description": "Calculate treatment guideline compliance metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get treatment guideline compliance metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/indicators": {
+            "get": {
+                "description": "Calculate and return all Point Prevalence Survey indicators",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get all PPS indicators",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.PPSIndicators"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/injectable-metrics": {
+            "get": {
+                "description": "Calculate injectable antibiotic prescription metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get injectable antibiotic metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/missed-dose-metrics": {
+            "get": {
+                "description": "Calculate missed dose metrics and reasons",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get missed dose metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/oral-switch-metrics": {
+            "get": {
+                "description": "Calculate oral switch metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get oral switch metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pps/prescriber-metrics": {
+            "get": {
+                "description": "Calculate prescriber-related metrics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get prescriber metrics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/specimens": {
             "get": {
                 "description": "Get a list of specimens with optional filtering by type, result, etc.",
@@ -564,6 +1216,39 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Specimen"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/antibiotic-details": {
+            "post": {
+                "description": "Upload a CSV file containing antibiotic details data",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload antibiotic details CSV file",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing antibiotic details data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
@@ -736,6 +1421,77 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.PPSIndicators": {
+            "type": "object",
+            "properties": {
+                "average_antibiotics_per_patient": {
+                    "type": "number"
+                },
+                "missed_dose_reasons": {
+                    "description": "Light Purple Section - Missed Dose Reasons",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "percentage_appropriate_diagnosis": {
+                    "type": "number"
+                },
+                "percentage_culture_based_prescriptions": {
+                    "type": "number"
+                },
+                "percentage_encounter_with_antibiotic": {
+                    "description": "Pink Section - Encounter Metrics",
+                    "type": "number"
+                },
+                "percentage_generic_prescriptions": {
+                    "description": "Light Green Section - Generic Name Metrics",
+                    "type": "number"
+                },
+                "percentage_guideline_compliant": {
+                    "type": "number"
+                },
+                "percentage_injectable_prescriptions": {
+                    "description": "Light Blue Section - Injectable Metrics",
+                    "type": "number"
+                },
+                "total_antibiotics_prescribed": {
+                    "description": "Grey/White Section - Basic Metrics",
+                    "type": "integer"
+                },
+                "total_appropriate_diagnosis": {
+                    "description": "Orange Section - Appropriate Diagnosis",
+                    "type": "integer"
+                },
+                "total_culture_based_prescriptions": {
+                    "description": "Dark Green Section - Culture and Sensitivity",
+                    "type": "integer"
+                },
+                "total_culture_samples_taken": {
+                    "type": "integer"
+                },
+                "total_generic_prescriptions": {
+                    "type": "integer"
+                },
+                "total_guideline_compliant": {
+                    "description": "Yellow Section - Treatment Guidelines",
+                    "type": "integer"
+                },
+                "total_injectable_prescriptions": {
+                    "type": "integer"
+                },
+                "total_missed_doses": {
+                    "description": "Purple Section - Missed Doses",
+                    "type": "integer"
+                },
+                "total_patients_on_ward": {
+                    "type": "integer"
+                },
+                "total_patients_with_antibiotics": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Antibiotic": {
             "type": "object",
             "properties": {
@@ -782,6 +1538,38 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "unit_doses_combination": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.AntibioticDetails": {
+            "type": "object",
+            "properties": {
+                "guideline": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "intraveno": {
+                    "type": "string"
+                },
+                "missed_dose": {
+                    "type": "string"
+                },
+                "number_missed": {
+                    "type": "string"
+                },
+                "oral_switch": {
+                    "type": "string"
+                },
+                "parent_key": {
+                    "type": "string"
+                },
+                "prescriber": {
+                    "type": "string"
+                },
+                "treatment": {
                     "type": "string"
                 }
             }

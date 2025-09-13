@@ -15,6 +15,7 @@ func SetupRoutes(r *gin.Engine) {
 	antibioticHandler := handlers.NewAntibioticHandler()
 	antibioticDetailsHandler := handlers.NewAntibioticDetailsHandler()
 	specimenHandler := handlers.NewSpecimenHandler()
+	ppsCalculationsHandler := handlers.NewPPSCalculationsHandler()
 
 	// API v1 routes
 	v1 := r.Group("/api/v1")
@@ -59,6 +60,21 @@ func SetupRoutes(r *gin.Engine) {
 			specimens.GET("/stats", specimenHandler.GetSpecimenStats)
 			specimens.GET("/:id", specimenHandler.GetSpecimen)
 			specimens.GET("/patient/:patient_id", specimenHandler.GetSpecimensByPatient)
+		}
+
+		// PPS Calculations routes
+		pps := v1.Group("/pps")
+		{
+			pps.GET("/indicators", ppsCalculationsHandler.GetAllIndicators)
+			pps.GET("/basic-metrics", ppsCalculationsHandler.GetBasicMetrics)
+			pps.GET("/injectable-metrics", ppsCalculationsHandler.GetInjectableMetrics)
+			pps.GET("/generic-metrics", ppsCalculationsHandler.GetGenericMetrics)
+			pps.GET("/guideline-metrics", ppsCalculationsHandler.GetGuidelineMetrics)
+			pps.GET("/diagnosis-metrics", ppsCalculationsHandler.GetDiagnosisMetrics)
+			pps.GET("/culture-metrics", ppsCalculationsHandler.GetCultureMetrics)
+			pps.GET("/missed-dose-metrics", ppsCalculationsHandler.GetMissedDoseMetrics)
+			pps.GET("/prescriber-metrics", ppsCalculationsHandler.GetPrescriberMetrics)
+			pps.GET("/oral-switch-metrics", ppsCalculationsHandler.GetOralSwitchMetrics)
 		}
 
 		// Upload routes
