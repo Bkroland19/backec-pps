@@ -510,3 +510,101 @@ func (h *PPSCalculationsHandler) GetLongStayPatients(c *gin.Context) {
 
 	c.JSON(http.StatusOK, metrics)
 }
+
+// GetAWaReCategorization calculates WHO AWaRe antibiotic categorization
+// @Summary Get WHO AWaRe antibiotic categorization
+// @Description Calculate the distribution of antibiotics based on WHO AWaRe classification (Access, Watch, Reserve, Unclassified)
+// @Tags pps-calculations
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/pps/aware-categorization [get]
+func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
+	// Get total antibiotics count
+	var totalAntibiotics int64
+	err := h.db.Model(&models.Antibiotic{}).Count(&totalAntibiotics).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get total antibiotics count"})
+		return
+	}
+
+	// Get Access antibiotics count (first choice antibiotics)
+	var accessCount int64
+	err = h.db.Model(&models.Antibiotic{}).
+		Where("antibiotic_aware_classification = ?", "Access").
+		Count(&accessCount).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Access antibiotics count"})
+		return
+	}
+
+	// Get Watch antibiotics count (second choice antibiotics)
+	var watchCount int64
+	err = h.db.Model(&models.Antibiotic{}).
+		Where("antibiotic_aware_classification = ?", "Watch").
+		Count(&watchCount).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Watch antibiotics count"})
+		return
+	}
+
+	// Get Reserve antibiotics count (last resort antibiotics)
+	var reserveCount int64
+	err = h.db.Model(&models.Antibiotic{}).
+		Where("antibiotic_aware_classification = ?", "Reserve").
+		Count(&reserveCount).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Reserve antibiotics count"})
+		return
+	}
+
+	// Get Unclassified antibiotics count (not categorized)
+	var unclassifiedCount int64
+	err = h.db.Model(&models.Antibiotic{}).
+		Where("antibiotic_aware_classification = ? OR antibiotic_aware_classification = '' OR antibiotic_aware_classification IS NULL", "Unclassified").
+		Count(&unclassifiedCount).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Unclassified antibiotics count"})
+		return
+	}
+
+	// Calculate percentages
+	accessPercentage := 0.0
+	watchPercentage := 0.0
+	reservePercentage := 0.0
+	unclassifiedPercentage := 0.0
+
+	if totalAntibiotics > 0 {
+		accessPercentage = (float64(accessCount) / float64(totalAntibiotics)) * 100
+		watchPercentage = (float64(watchCount) / float64(totalAntibiotics)) * 100
+		reservePercentage = (float64(reserveCount) / float64(totalAntibiotics)) * 100
+		unclassifiedPercentage = (float64(unclassifiedCount) / float64(totalAntibiotics)) * 100
+	}
+
+	metrics := gin.H{
+		"total_antibiotics": totalAntibiotics,
+		"access": gin.H{
+			"count":       accessCount,
+			"percentage":  accessPercentage,
+			"description": "First choice antibiotics",
+		},
+		"watch": gin.H{
+			"count":       watchCount,
+			"percentage":  watchPercentage,
+			"description": "Second choice antibiotics",
+		},
+		"reserve": gin.H{
+			"count":       reserveCount,
+			"percentage":  reservePercentage,
+			"description": "Last resort antibiotics",
+		},
+		"unclassified": gin.H{
+			"count":       unclassifiedCount,
+			"percentage":  unclassifiedPercentage,
+			"description": "Not categorized",
+		},
+	}
+
+	c.JSON(http.StatusOK, metrics)
+}
