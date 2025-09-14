@@ -790,62 +790,93 @@ func (s *CSVService) parseAntibioticRecord(record []string) models.Antibiotic {
 	log.Printf("Antibiotic CSV Record structure - First 10 columns: %v", first10)
 	log.Printf("Antibiotic Total columns: %d", len(record))
 
-	// The ParentKey (column 20/index 19) should be used as the database key
-	if len(record) > 19 && record[19] != "" {
+	// Based on your CSV structure:
+	// Column 14 (index 13): PARENT_K
+	// Column 15 (index 14): KEY (this should be the antibiotic ID)
+	
+	// Set the antibiotic ID from the KEY column (column 15, index 14)
+	if len(record) > 14 && record[14] != "" {
+		// Extract the UUID part from the KEY (remove /Antibioticform/Core_variables[X])
+		key := record[14]
+		if strings.Contains(key, "/Antibioticform/") {
+			// Extract just the UUID part before /Antibioticform/
+			parts := strings.Split(key, "/Antibioticform/")
+			if len(parts) > 0 {
+				antibiotic.ID = parts[0]
+			}
+		} else {
+			antibiotic.ID = key
+		}
+	}
+	
+	// Set the ParentKey from the PARENT_K column (column 14, index 13)
+	if len(record) > 13 && record[13] != "" {
 		// Extract the UUID part from the ParentKey (remove /Antibioticform/Core_variables[X])
-		parentKey := record[19]
+		parentKey := record[13]
 		if strings.Contains(parentKey, "/Antibioticform/") {
 			// Extract just the UUID part before /Antibioticform/
 			parts := strings.Split(parentKey, "/Antibioticform/")
 			if len(parts) > 0 {
-				antibiotic.ID = parts[0]
-				antibiotic.ParentKey = parts[0] // Also set as ParentKey to link to patient
+				antibiotic.ParentKey = parts[0]
 			}
 		} else {
-			antibiotic.ID = parentKey
-			antibiotic.ParentKey = parentKey // Also set as ParentKey to link to patient
+			antibiotic.ParentKey = parentKey
 		}
 	}
-	if len(record) > 0 && record[0] != "" {
-		antibiotic.AntibioticNotes = record[0]
-	}
+	// Based on your CSV structure:
+	// Column 1: Empty
+	// Column 2: Antibiotic name (e.g., "Ceftriaxone")
+	// Column 3: Other_An (empty)
+	// Column 4: atc_code
+	// Column 5: antibiotic class
+	// Column 6: antibiotic classification
+	// Column 7: Empty
+	// Column 8: StartDateAntibiotic
+	// Column 9: UnitDose
+	// Column 10: UnitDoses
+	// Column 11: UnitDosel (frequency)
+	// Column 12: UnitDosef (administration route)
+	// Column 13: Empty
+	// Column 14: PARENT_K
+	// Column 15: KEY
+	
 	if len(record) > 1 && record[1] != "" {
-		antibiotic.AntibioticINNName = record[1]
+		antibiotic.AntibioticINNName = record[1] // Column 2: Antibiotic name
 	}
 	if len(record) > 2 && record[2] != "" {
-		antibiotic.OtherAntibiotic = record[2]
+		antibiotic.OtherAntibiotic = record[2] // Column 3: Other_An
 	}
 	if len(record) > 3 && record[3] != "" {
-		antibiotic.ATCCode = record[3]
+		antibiotic.ATCCode = record[3] // Column 4: atc_code
 	}
 	if len(record) > 4 && record[4] != "" {
-		antibiotic.AntibioticClass = record[4]
+		antibiotic.AntibioticClass = record[4] // Column 5: antibiotic class
 	}
 	if len(record) > 5 && record[5] != "" {
-		antibiotic.AntibioticAwareClassification = record[5]
+		antibiotic.AntibioticAwareClassification = record[5] // Column 6: antibiotic classification
 	}
 	if len(record) > 6 && record[6] != "" {
-		antibiotic.AntibioticWrittenInINN = record[6]
+		antibiotic.AntibioticWrittenInINN = record[6] // Column 7: Empty in your data
 	}
 	if len(record) > 7 && record[7] != "" {
-		antibiotic.StartDateAntibiotic = s.parseDate(record[7])
+		antibiotic.StartDateAntibiotic = s.parseDate(record[7]) // Column 8: StartDateAntibiotic
 	}
 	if len(record) > 8 && record[8] != "" {
 		if val, err := strconv.ParseFloat(record[8], 64); err == nil {
-			antibiotic.UnitDose = val
+			antibiotic.UnitDose = val // Column 9: UnitDose
 		}
 	}
 	if len(record) > 9 && record[9] != "" {
-		antibiotic.UnitDosesCombination = record[9]
+		antibiotic.UnitDosesCombination = record[9] // Column 10: UnitDoses
 	}
 	if len(record) > 10 && record[10] != "" {
-		antibiotic.UnitDoseMeasureUnit = record[10]
+		antibiotic.UnitDoseMeasureUnit = record[10] // Column 11: UnitDosel (frequency)
 	}
 	if len(record) > 11 && record[11] != "" {
-		antibiotic.UnitDoseFrequency = record[11]
+		antibiotic.UnitDoseFrequency = record[11] // Column 12: UnitDosef (administration route)
 	}
 	if len(record) > 12 && record[12] != "" {
-		antibiotic.AdministrationRoute = record[12]
+		antibiotic.AdministrationRoute = record[12] // Column 13: Empty in your data
 	}
 	// ParentKey is now set as the ID above, so we don't need to set it again
 

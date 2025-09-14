@@ -88,6 +88,11 @@ func (h *PPSCalculationsHandler) GetAllIndicators(c *gin.Context) {
 	}
 
 	// Encounter Metrics (Pink Section)
+	// The facility ward number should be counted once (distinct wards)
+	var distinctWards int64
+	h.db.Model(&models.Patient{}).Distinct("facility_ward_number").Count(&distinctWards)
+	indicators.TotalPatientsOnWard = int(distinctWards)
+
 	if indicators.TotalPatientsOnWard > 0 {
 		indicators.PercentageEncounterWithAntibiotic = (float64(indicators.TotalPatientsWithAntibiotics) / float64(indicators.TotalPatientsOnWard)) * 100
 	}
@@ -182,7 +187,8 @@ func (h *PPSCalculationsHandler) GetBasicMetrics(c *gin.Context) {
 
 	h.db.Model(&models.Antibiotic{}).Count(&totalAntibiotics)
 	h.db.Model(&models.Antibiotic{}).Distinct("parent_key").Count(&totalPatientsWithAntibiotics)
-	h.db.Model(&models.Patient{}).Count(&totalPatients)
+	// The facility ward number should be counted once (distinct wards)
+	h.db.Model(&models.Patient{}).Distinct("facility_ward_number").Count(&totalPatients)
 
 	averageAntibiotics := 0.0
 	if totalPatientsWithAntibiotics > 0 {
@@ -442,7 +448,7 @@ func (h *PPSCalculationsHandler) GetOralSwitchMetrics(c *gin.Context) {
 	}
 	h.db.Model(&models.AntibioticDetails{}).
 		Select("oral_switch, count(*) as count").
-		Where("oral_switch != '' AND oral_switch IS NOT NULL").
+		Where("oral_switch != '' AND oral_switch IS NOT NULL AND oral_switch = 'yes'").
 		Group("oral_switch").
 		Find(&oralSwitchStats)
 
