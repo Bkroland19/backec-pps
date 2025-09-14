@@ -463,3 +463,50 @@ func (h *PPSCalculationsHandler) GetOralSwitchMetrics(c *gin.Context) {
 
 	c.JSON(http.StatusOK, metrics)
 }
+
+// GetLongStayPatients calculates the number of patients staying longer than 7 days
+// @Summary Get patients staying longer than 7 days
+// @Description Calculate the number of patients who have been staying for more than 7 days based on survey date minus admission date
+// @Tags pps-calculations
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/pps/long-stay-patients [get]
+func (h *PPSCalculationsHandler) GetLongStayPatients(c *gin.Context) {
+	var longStayCount int64
+
+	// Calculate patients staying longer than 7 days
+	// Using SQL to calculate the difference between survey_date and admission_date
+	err := h.db.Model(&models.Patient{}).
+		Where("survey_date - admission_date > INTERVAL '7 days'").
+		Count(&longStayCount).Error
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to calculate long stay patients"})
+		return
+	}
+
+	// Also get total patients for percentage calculation
+	var totalPatients int64
+	err = h.db.Model(&models.Patient{}).Count(&totalPatients).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get total patients count"})
+		return
+	}
+
+	// Calculate percentage
+	percentage := 0.0
+	if totalPatients > 0 {
+		percentage = (float64(longStayCount) / float64(totalPatients)) * 100
+	}
+
+	metrics := gin.H{
+		"patients_staying_longer_than_7_days": longStayCount,
+		"total_patients":                      totalPatients,
+		"percentage_long_stay":                percentage,
+		"description":                         "Patients staying longer than 7 days (survey_date - admission_date > 7 days)",
+	}
+
+	c.JSON(http.StatusOK, metrics)
+}

@@ -75,6 +75,7 @@ func SetupRoutes(r *gin.Engine) {
 			pps.GET("/missed-dose-metrics", ppsCalculationsHandler.GetMissedDoseMetrics)
 			pps.GET("/prescriber-metrics", ppsCalculationsHandler.GetPrescriberMetrics)
 			pps.GET("/oral-switch-metrics", ppsCalculationsHandler.GetOralSwitchMetrics)
+			pps.GET("/long-stay-patients", ppsCalculationsHandler.GetLongStayPatients)
 		}
 
 		// Upload routes

@@ -793,7 +793,7 @@ func (s *CSVService) parseAntibioticRecord(record []string) models.Antibiotic {
 	// Based on your CSV structure:
 	// Column 14 (index 13): PARENT_K
 	// Column 15 (index 14): KEY (this should be the antibiotic ID)
-	
+
 	// Set the antibiotic ID from the KEY column (column 15, index 14)
 	if len(record) > 14 && record[14] != "" {
 		// Extract the UUID part from the KEY (remove /Antibioticform/Core_variables[X])
@@ -808,7 +808,7 @@ func (s *CSVService) parseAntibioticRecord(record []string) models.Antibiotic {
 			antibiotic.ID = key
 		}
 	}
-	
+
 	// Set the ParentKey from the PARENT_K column (column 14, index 13)
 	if len(record) > 13 && record[13] != "" {
 		// Extract the UUID part from the ParentKey (remove /Antibioticform/Core_variables[X])
@@ -823,60 +823,54 @@ func (s *CSVService) parseAntibioticRecord(record []string) models.Antibiotic {
 			antibiotic.ParentKey = parentKey
 		}
 	}
-	// Based on your CSV structure:
-	// Column 1: Empty
-	// Column 2: Antibiotic name (e.g., "Ceftriaxone")
-	// Column 3: Other_An (empty)
-	// Column 4: atc_code
-	// Column 5: antibiotic class
-	// Column 6: antibiotic classification
-	// Column 7: Empty
-	// Column 8: StartDateAntibiotic
-	// Column 9: UnitDose
-	// Column 10: UnitDoses
-	// Column 11: UnitDosel (frequency)
-	// Column 12: UnitDosef (administration route)
-	// Column 13: Empty
+	// Based on the actual CSV structure from logs:
+	// Column 1: Antibiotic notes/name (e.g., "Ampicillin")
+	// Column 2: Antibiotic INN name (e.g., "Ampicillin")
+	// Column 3: Other antibiotic info (e.g., "yes")
+	// Column 4: ATC code/classification (e.g., "yes")
+	// Column 5: Start date (e.g., "2024-08-20")
+	// Column 6: Unit dose (e.g., "1g")
+	// Column 7: Unit doses combination
+	// Column 8: Unit dose measure unit
+	// Column 9: Unit dose frequency
+	// Column 10: Administration route
+	// Column 11: Additional field
+	// Column 12: Additional field
+	// Column 13: Additional field
 	// Column 14: PARENT_K
 	// Column 15: KEY
-	
+
+	if len(record) > 0 && record[0] != "" {
+		antibiotic.AntibioticNotes = record[0] // Column 1: Antibiotic notes/name
+	}
 	if len(record) > 1 && record[1] != "" {
-		antibiotic.AntibioticINNName = record[1] // Column 2: Antibiotic name
+		antibiotic.AntibioticINNName = record[1] // Column 2: Antibiotic INN name
 	}
 	if len(record) > 2 && record[2] != "" {
-		antibiotic.OtherAntibiotic = record[2] // Column 3: Other_An
+		antibiotic.OtherAntibiotic = record[2] // Column 3: Other antibiotic info
 	}
 	if len(record) > 3 && record[3] != "" {
-		antibiotic.ATCCode = record[3] // Column 4: atc_code
+		antibiotic.AntibioticClass = record[3] // Column 4: ATC code/classification
 	}
 	if len(record) > 4 && record[4] != "" {
-		antibiotic.AntibioticClass = record[4] // Column 5: antibiotic class
+		antibiotic.StartDateAntibiotic = s.parseDate(record[4]) // Column 5: Start date
 	}
 	if len(record) > 5 && record[5] != "" {
-		antibiotic.AntibioticAwareClassification = record[5] // Column 6: antibiotic classification
-	}
-	if len(record) > 6 && record[6] != "" {
-		antibiotic.AntibioticWrittenInINN = record[6] // Column 7: Empty in your data
-	}
-	if len(record) > 7 && record[7] != "" {
-		antibiotic.StartDateAntibiotic = s.parseDate(record[7]) // Column 8: StartDateAntibiotic
-	}
-	if len(record) > 8 && record[8] != "" {
-		if val, err := strconv.ParseFloat(record[8], 64); err == nil {
-			antibiotic.UnitDose = val // Column 9: UnitDose
+		if val, err := strconv.ParseFloat(record[5], 64); err == nil {
+			antibiotic.UnitDose = val // Column 6: Unit dose
 		}
 	}
+	if len(record) > 6 && record[6] != "" {
+		antibiotic.UnitDosesCombination = record[6] // Column 7: Unit doses combination
+	}
+	if len(record) > 7 && record[7] != "" {
+		antibiotic.UnitDoseMeasureUnit = record[7] // Column 8: Unit dose measure unit
+	}
+	if len(record) > 8 && record[8] != "" {
+		antibiotic.UnitDoseFrequency = record[8] // Column 9: Unit dose frequency
+	}
 	if len(record) > 9 && record[9] != "" {
-		antibiotic.UnitDosesCombination = record[9] // Column 10: UnitDoses
-	}
-	if len(record) > 10 && record[10] != "" {
-		antibiotic.UnitDoseMeasureUnit = record[10] // Column 11: UnitDosel (frequency)
-	}
-	if len(record) > 11 && record[11] != "" {
-		antibiotic.UnitDoseFrequency = record[11] // Column 12: UnitDosef (administration route)
-	}
-	if len(record) > 12 && record[12] != "" {
-		antibiotic.AdministrationRoute = record[12] // Column 13: Empty in your data
+		antibiotic.AdministrationRoute = record[9] // Column 10: Administration route
 	}
 	// ParentKey is now set as the ID above, so we don't need to set it again
 

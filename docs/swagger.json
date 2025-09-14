@@ -969,6 +969,39 @@
                 }
             }
         },
+        "/api/v1/pps/long-stay-patients": {
+            "get": {
+                "description": "Calculate the number of patients who have been staying for more than 7 days based on survey date minus admission date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pps-calculations"
+                ],
+                "summary": "Get patients staying longer than 7 days",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/pps/missed-dose-metrics": {
             "get": {
                 "description": "Calculate missed dose metrics and reasons",

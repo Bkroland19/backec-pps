@@ -942,6 +942,29 @@ paths:
       summary: Get injectable antibiotic metrics
       tags:
       - pps-calculations
+  /api/v1/pps/long-stay-patients:
+    get:
+      consumes:
+      - application/json
+      description: Calculate the number of patients who have been staying for more
+        than 7 days based on survey date minus admission date
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get patients staying longer than 7 days
+      tags:
+      - pps-calculations
   /api/v1/pps/missed-dose-metrics:
     get:
       consumes:
