@@ -789,6 +789,29 @@ paths:
       summary: Get patient statistics
       tags:
       - patients
+  /api/v1/pps/appropriate-diagnosis:
+    get:
+      consumes:
+      - application/json
+      description: Percentage = count of "yes" responses divided by total responses
+        (yes/no) from indications.reason_in_notes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get appropriate diagnosis percentage
+      tags:
+      - pps-calculations
   /api/v1/pps/aware-categorization:
     get:
       consumes:

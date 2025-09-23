@@ -532,7 +532,7 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Access antibiotics count (first choice antibiotics)
 	var accessCount int64
 	err = h.db.Model(&models.Antibiotic{}).
-		Where("antibiotic_aware_classification = ?", "Access").
+		Where("LOWER(antibiotic_aware_classification) = ?", "access").
 		Count(&accessCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Access antibiotics count"})
@@ -542,7 +542,7 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Watch antibiotics count (second choice antibiotics)
 	var watchCount int64
 	err = h.db.Model(&models.Antibiotic{}).
-		Where("antibiotic_aware_classification = ?", "Watch").
+		Where("LOWER(antibiotic_aware_classification) = ?", "watch").
 		Count(&watchCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Watch antibiotics count"})
@@ -552,22 +552,15 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Reserve antibiotics count (last resort antibiotics)
 	var reserveCount int64
 	err = h.db.Model(&models.Antibiotic{}).
-		Where("antibiotic_aware_classification = ?", "Reserve").
+		Where("LOWER(antibiotic_aware_classification) = ?", "reserve").
 		Count(&reserveCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Reserve antibiotics count"})
 		return
 	}
 
-	// Get Unclassified antibiotics count (not categorized)
-	var unclassifiedCount int64
-	err = h.db.Model(&models.Antibiotic{}).
-		Where("antibiotic_aware_classification = ? OR antibiotic_aware_classification = '' OR antibiotic_aware_classification IS NULL", "Unclassified").
-		Count(&unclassifiedCount).Error
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Unclassified antibiotics count"})
-		return
-	}
+	// Compute Unclassified as everything not Access/Watch/Reserve (case-insensitive)
+	unclassifiedCount := totalAntibiotics - (accessCount + watchCount + reserveCount)
 
 	// Calculate percentages
 	accessPercentage := 0.0
@@ -604,6 +597,47 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 			"percentage":  unclassifiedPercentage,
 			"description": "Not categorized",
 		},
+	}
+
+	c.JSON(http.StatusOK, metrics)
+}
+
+// GetAppropriateDiagnosisPercentage returns percentage of "yes" responses for appropriate diagnosis
+// @Summary Get appropriate diagnosis percentage
+// @Description Percentage = count of "yes" responses divided by total responses (yes/no) from indications.reason_in_notes
+// @Tags pps-calculations
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/pps/appropriate-diagnosis [get]
+func (h *PPSCalculationsHandler) GetAppropriateDiagnosisPercentage(c *gin.Context) {
+	var totalResponses int64
+	var yesResponses int64
+
+	if err := h.db.Model(&models.Indication{}).
+		Where("reason_in_notes IS NOT NULL AND reason_in_notes != ''").
+		Count(&totalResponses).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to count total responses"})
+		return
+	}
+
+	if err := h.db.Model(&models.Indication{}).
+		Where("LOWER(reason_in_notes) = ?", "yes").
+		Count(&yesResponses).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to count yes responses"})
+		return
+	}
+
+	percentage := 0.0
+	if totalResponses > 0 {
+		percentage = (float64(yesResponses) / float64(totalResponses)) * 100
+	}
+
+	metrics := gin.H{
+		"appropriate_diagnosis_yes":        yesResponses,
+		"appropriate_diagnosis_total":      totalResponses,
+		"percentage_appropriate_diagnosis": percentage,
 	}
 
 	c.JSON(http.StatusOK, metrics)
