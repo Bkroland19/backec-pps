@@ -780,7 +780,7 @@ const docTemplate = `{
         },
         "/api/v1/pps/aware-categorization": {
             "get": {
-                "description": "Calculate the distribution of antibiotics based on WHO AWaRe classification (Access, Watch, Reserve, Unclassified)",
+                "description": "Calculate the distribution of antibiotics based on WHO AWaRe classification (Access, Watch, Reserve, Unclassified) with optional filtering",
                 "consumes": [
                     "application/json"
                 ],
@@ -791,6 +791,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get WHO AWaRe antibiotic categorization",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -813,7 +863,7 @@ const docTemplate = `{
         },
         "/api/v1/pps/basic-metrics": {
             "get": {
-                "description": "Calculate basic Point Prevalence Survey metrics",
+                "description": "Calculate basic Point Prevalence Survey metrics with optional filtering",
                 "consumes": [
                     "application/json"
                 ],
@@ -824,6 +874,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get basic PPS metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -978,7 +1078,7 @@ const docTemplate = `{
         },
         "/api/v1/pps/indicators": {
             "get": {
-                "description": "Calculate and return all Point Prevalence Survey indicators",
+                "description": "Calculate and return all Point Prevalence Survey indicators with optional filtering",
                 "consumes": [
                     "application/json"
                 ],
@@ -989,6 +1089,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get all PPS indicators",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

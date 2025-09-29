@@ -156,6 +156,10 @@ func (OptionalVar) TableName() string {
 	return "optional_vars"
 }
 
+func (AntibioticDetails) TableName() string {
+	return "antibiotic_details"
+}
+
 func (Specimen) TableName() string {
 	return "specimens"
 }

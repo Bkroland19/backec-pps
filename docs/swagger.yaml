@@ -817,7 +817,40 @@ paths:
       consumes:
       - application/json
       description: Calculate the distribution of antibiotics based on WHO AWaRe classification
-        (Access, Watch, Reserve, Unclassified)
+        (Access, Watch, Reserve, Unclassified) with optional filtering
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -839,7 +872,40 @@ paths:
     get:
       consumes:
       - application/json
-      description: Calculate basic Point Prevalence Survey metrics
+      description: Calculate basic Point Prevalence Survey metrics with optional filtering
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -949,7 +1015,41 @@ paths:
     get:
       consumes:
       - application/json
-      description: Calculate and return all Point Prevalence Survey indicators
+      description: Calculate and return all Point Prevalence Survey indicators with
+        optional filtering
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
