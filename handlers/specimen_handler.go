@@ -5,6 +5,7 @@ import (
 	"point-prevalence-survey/database"
 	"point-prevalence-survey/models"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -20,6 +21,62 @@ func NewSpecimenHandler() *SpecimenHandler {
 	}
 }
 
+// applyFilters applies comprehensive filtering to a query based on URL parameters
+func (h *SpecimenHandler) applyFilters(db *gorm.DB, c *gin.Context) *gorm.DB {
+	// Check if any filtering parameters are provided
+	hasFilters := c.Query("start_date") != "" || c.Query("end_date") != "" ||
+		c.Query("region") != "" || c.Query("district") != "" || c.Query("subcounty") != "" ||
+		c.Query("facility") != "" || c.Query("level") != "" || c.Query("ownership") != ""
+
+	if hasFilters {
+		// Join with patients table to filter by patient parameters
+		db = db.Joins("JOIN patients ON patients.key = specimens.parent_key")
+
+		// Apply date filtering
+		startDateStr := c.Query("start_date")
+		endDateStr := c.Query("end_date")
+
+		if startDateStr != "" {
+			if startDate, err := time.Parse("2006-01-02", startDateStr); err == nil {
+				db = db.Where("DATE(patients.submission_date) >= ?", startDate.Format("2006-01-02"))
+			}
+		}
+
+		if endDateStr != "" {
+			if endDate, err := time.Parse("2006-01-02", endDateStr); err == nil {
+				db = db.Where("DATE(patients.submission_date) <= ?", endDate.Format("2006-01-02"))
+			}
+		}
+
+		// Apply geographic and facility filtering
+		if region := c.Query("region"); region != "" {
+			db = db.Where("patients.region = ?", region)
+		}
+
+		if district := c.Query("district"); district != "" {
+			db = db.Where("patients.district = ?", district)
+		}
+
+		if subcounty := c.Query("subcounty"); subcounty != "" {
+			db = db.Where("patients.subcounty = ?", subcounty)
+		}
+
+		if facility := c.Query("facility"); facility != "" {
+			db = db.Where("patients.facility = ?", facility)
+		}
+
+		if level := c.Query("level"); level != "" {
+			db = db.Where("patients.level_of_care = ?", level)
+		}
+
+		if ownership := c.Query("ownership"); ownership != "" {
+			db = db.Where("patients.ownership = ?", ownership)
+		}
+	}
+
+	return db
+}
+
 // GetSpecimens godoc
 // @Summary Get all specimens with optional filtering
 // @Description Get a list of specimens with optional filtering by type, result, etc.
@@ -29,6 +86,14 @@ func NewSpecimenHandler() *SpecimenHandler {
 // @Param type query string false "Filter by specimen type"
 // @Param result query string false "Filter by culture result"
 // @Param patient_id query string false "Filter by patient ID"
+// @Param start_date query string false "Start date for filtering (YYYY-MM-DD)"
+// @Param end_date query string false "End date for filtering (YYYY-MM-DD)"
+// @Param region query string false "Region for filtering"
+// @Param district query string false "District for filtering"
+// @Param subcounty query string false "Subcounty for filtering"
+// @Param facility query string false "Facility for filtering"
+// @Param level query string false "Level of care for filtering"
+// @Param ownership query string false "Ownership for filtering"
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Items per page" default(10)
 // @Success 200 {object} map[string]interface{}
@@ -37,7 +102,10 @@ func (h *SpecimenHandler) GetSpecimens(c *gin.Context) {
 	var specimens []models.Specimen
 	query := h.db.Model(&models.Specimen{})
 
-	// Apply filters
+	// Apply comprehensive filtering (date and geographic)
+	query = h.applyFilters(query, c)
+
+	// Apply specimen-specific filters
 	if specimenType := c.Query("type"); specimenType != "" {
 		query = query.Where("specimen_type = ?", specimenType)
 	}
@@ -98,6 +166,14 @@ func (h *SpecimenHandler) GetSpecimen(c *gin.Context) {
 // @Tags specimens
 // @Accept json
 // @Produce json
+// @Param start_date query string false "Start date for filtering (YYYY-MM-DD)"
+// @Param end_date query string false "End date for filtering (YYYY-MM-DD)"
+// @Param region query string false "Region for filtering"
+// @Param district query string false "District for filtering"
+// @Param subcounty query string false "Subcounty for filtering"
+// @Param facility query string false "Facility for filtering"
+// @Param level query string false "Level of care for filtering"
+// @Param ownership query string false "Ownership for filtering"
 // @Success 200 {object} map[string]interface{}
 // @Router /api/v1/specimens/stats [get]
 func (h *SpecimenHandler) GetSpecimenStats(c *gin.Context) {
@@ -121,20 +197,23 @@ func (h *SpecimenHandler) GetSpecimenStats(c *gin.Context) {
 		} `json:"by_resistant_phenotype"`
 	}
 
+	// Get base query with filtering
+	baseQuery := h.applyFilters(h.db.Model(&models.Specimen{}), c)
+
 	// Total specimens
-	h.db.Model(&models.Specimen{}).Count(&stats.TotalSpecimens)
+	baseQuery.Count(&stats.TotalSpecimens)
 
 	// By type
-	h.db.Model(&models.Specimen{}).Select("specimen_type as type, count(*) as count").Group("specimen_type").Scan(&stats.ByType)
+	h.applyFilters(h.db.Model(&models.Specimen{}), c).Select("specimen_type as type, count(*) as count").Group("specimen_type").Scan(&stats.ByType)
 
 	// By result
-	h.db.Model(&models.Specimen{}).Select("culture_result as result, count(*) as count").Group("culture_result").Scan(&stats.ByResult)
+	h.applyFilters(h.db.Model(&models.Specimen{}), c).Select("culture_result as result, count(*) as count").Group("culture_result").Scan(&stats.ByResult)
 
 	// By microorganism
-	h.db.Model(&models.Specimen{}).Select("microorganism, count(*) as count").Where("microorganism != ''").Group("microorganism").Scan(&stats.ByMicroorganism)
+	h.applyFilters(h.db.Model(&models.Specimen{}), c).Select("microorganism, count(*) as count").Where("microorganism != ''").Group("microorganism").Scan(&stats.ByMicroorganism)
 
 	// By resistant phenotype
-	h.db.Model(&models.Specimen{}).Select("resistant_phenotype, count(*) as count").Where("resistant_phenotype != ''").Group("resistant_phenotype").Scan(&stats.ByResistantPhenotype)
+	h.applyFilters(h.db.Model(&models.Specimen{}), c).Select("resistant_phenotype, count(*) as count").Where("resistant_phenotype != ''").Group("resistant_phenotype").Scan(&stats.ByResistantPhenotype)
 
 	c.JSON(http.StatusOK, stats)
 }

@@ -758,6 +758,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get appropriate diagnosis percentage",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -957,6 +1007,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get culture and sensitivity metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1023,6 +1123,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get generic name prescription metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1056,6 +1206,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get treatment guideline compliance metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1204,6 +1404,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get patients staying longer than 7 days",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1270,6 +1520,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get oral switch metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1303,6 +1603,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get prescriber metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1353,6 +1703,54 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Filter by patient ID",
                         "name": "patient_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
                         "in": "query"
                     },
                     {
@@ -1427,6 +1825,56 @@ const docTemplate = `{
                     "specimens"
                 ],
                 "summary": "Get specimen statistics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2117,7 +2565,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "csf.health.go.ug",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Point Prevalence Survey API",

@@ -295,7 +295,7 @@ definitions:
       specimen_type:
         type: string
     type: object
-host: localhost:8080
+host: csf.health.go.ug
 info:
   contact: {}
   description: API for managing Point Prevalence Survey data with PostgreSQL integration
@@ -795,6 +795,39 @@ paths:
       - application/json
       description: Percentage = count of "yes" responses divided by total responses
         (yes/no) from indications.reason_in_notes
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -928,6 +961,39 @@ paths:
       consumes:
       - application/json
       description: Calculate culture and sensitivity metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -972,6 +1038,39 @@ paths:
       consumes:
       - application/json
       description: Calculate generic name antibiotic prescription metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -994,6 +1093,39 @@ paths:
       consumes:
       - application/json
       description: Calculate treatment guideline compliance metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1094,6 +1226,39 @@ paths:
       - application/json
       description: Calculate the number of patients who have been staying for more
         than 7 days based on survey date minus admission date
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1138,6 +1303,39 @@ paths:
       consumes:
       - application/json
       description: Calculate oral switch metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1160,6 +1358,39 @@ paths:
       consumes:
       - application/json
       description: Calculate prescriber-related metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1195,6 +1426,38 @@ paths:
       - description: Filter by patient ID
         in: query
         name: patient_id
+        type: string
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
         type: string
       - default: 1
         description: Page number
@@ -1265,6 +1528,39 @@ paths:
       consumes:
       - application/json
       description: Get aggregated statistics about specimens
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
