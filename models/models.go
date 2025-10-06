@@ -117,7 +117,7 @@ type Indication struct {
 
 // OptionalVar represents optional variables data
 type OptionalVar struct {
-	ID                   string `json:"id" gorm:"primaryKey;column:key"`
+	ID                   string `json:"id" gorm:"column:key"`
 	PrescriberType       string `json:"prescriber_type" gorm:"column:prescriber_type"`
 	IntravenousType      string `json:"intravenous_type" gorm:"column:intravenous_type"`
 	OralSwitch           string `json:"oral_switch" gorm:"column:oral_switch"`
@@ -125,7 +125,7 @@ type OptionalVar struct {
 	MissedDosesReason    string `json:"missed_doses_reason" gorm:"column:missed_doses_reason"`
 	GuidelinesCompliance string `json:"guidelines_compliance" gorm:"column:guidelines_compliance"`
 	TreatmentType        string `json:"treatment_type" gorm:"column:treatment_type"`
-	ParentKey            string `json:"parent_key" gorm:"column:parent_key"`
+	ParentKey            string `json:"parent_key" gorm:"column:parent_key;constraint:-"`
 }
 
 // Specimen represents specimen data

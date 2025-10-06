@@ -15,6 +15,7 @@ func SetupRoutes(r *gin.Engine) {
 	antibioticHandler := handlers.NewAntibioticHandler()
 	antibioticDetailsHandler := handlers.NewAntibioticDetailsHandler()
 	specimenHandler := handlers.NewSpecimenHandler()
+	optionalVarsHandler := handlers.NewOptionalVarsHandler()
 	ppsCalculationsHandler := handlers.NewPPSCalculationsHandler()
 
 	// API v1 routes
@@ -60,6 +61,18 @@ func SetupRoutes(r *gin.Engine) {
 			specimens.GET("/stats", specimenHandler.GetSpecimenStats)
 			specimens.GET("/:id", specimenHandler.GetSpecimen)
 			specimens.GET("/patient/:patient_id", specimenHandler.GetSpecimensByPatient)
+		}
+
+		// Optional Variables routes
+		optionalVars := v1.Group("/optional-vars")
+		{
+			optionalVars.GET("", optionalVarsHandler.GetOptionalVars)
+			optionalVars.GET("/stats", optionalVarsHandler.GetOptionalVarsStats)
+			optionalVars.GET("/:id", optionalVarsHandler.GetOptionalVar)
+			optionalVars.POST("", optionalVarsHandler.CreateOptionalVar)
+			optionalVars.PUT("/:id", optionalVarsHandler.UpdateOptionalVar)
+			optionalVars.DELETE("/:id", optionalVarsHandler.DeleteOptionalVar)
+			optionalVars.POST("/upload", optionalVarsHandler.BulkUploadOptionalVars)
 		}
 
 		// PPS Calculations routes

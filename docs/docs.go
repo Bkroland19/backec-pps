@@ -485,6 +485,430 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/optional-vars": {
+            "get": {
+                "description": "Get a list of optional variables with optional filtering by prescriber type, intravenous type, etc.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Get all optional variables with optional filtering",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter by prescriber type",
+                        "name": "prescriber_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by intravenous type",
+                        "name": "intravenous_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by guidelines compliance",
+                        "name": "guidelines_compliance",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Items per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new optional variable record with the provided data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Create a new optional variable record",
+                "parameters": [
+                    {
+                        "description": "Optional Variable data",
+                        "name": "optional_var",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OptionalVar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.OptionalVar"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/optional-vars/stats": {
+            "get": {
+                "description": "Get aggregated statistics about optional variables",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Get optional variables statistics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/optional-vars/upload": {
+            "post": {
+                "description": "Upload multiple optional variables from a CSV file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Bulk upload optional variables from CSV",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "CSV file containing optional variables data",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/optional-vars/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific optional variable",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Get a specific optional variable by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Optional Variable ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OptionalVar"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an existing optional variable record by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Update an optional variable record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Optional Variable ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated Optional Variable data",
+                        "name": "optional_var",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OptionalVar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.OptionalVar"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an optional variable record by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "optional-vars"
+                ],
+                "summary": "Delete an optional variable record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Optional Variable ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/patients": {
             "get": {
                 "description": "Get a list of patients with optional filtering by region, district, facility, etc.",
@@ -2565,7 +2989,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "csf.health.go.ug",
+	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Point Prevalence Survey API",

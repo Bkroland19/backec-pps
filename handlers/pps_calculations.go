@@ -220,6 +220,12 @@ func (h *PPSCalculationsHandler) getFilteredSpecimenQuery(c *gin.Context) *gorm.
 	return h.applyPatientFiltersToSpecimenQuery(query, c)
 }
 
+// getFilteredOptionalVarsQuery returns a query for optional_vars filtered by parent patient's parameters
+func (h *PPSCalculationsHandler) getFilteredOptionalVarsQuery(c *gin.Context) *gorm.DB {
+	query := h.db.Model(&models.OptionalVar{})
+	return h.applyPatientFiltersToQuery(query, c, "optional_vars")
+}
+
 // PPSIndicators represents all the calculated indicators
 type PPSIndicators struct {
 	// Grey/White Section - Basic Metrics
@@ -513,18 +519,29 @@ func (h *PPSCalculationsHandler) GetGenericMetrics(c *gin.Context) {
 // @Router /api/v1/pps/guideline-metrics [get]
 func (h *PPSCalculationsHandler) GetGuidelineMetrics(c *gin.Context) {
 	var totalGuidelineCompliant int64
-	var totalAntibiotics int64
+	var totalOptionalVars int64
 
-	h.getFilteredAntibioticDetailsQuery(c).Where("guideline = ?", "yes").Count(&totalGuidelineCompliant)
-	h.getFilteredAntibioticQuery(c).Count(&totalAntibiotics)
+	// Get filtered optional_vars query with patient joins
+	optionalVarsQuery := h.getFilteredOptionalVarsQuery(c)
+
+	// Count records where guidelines_compliance = 'yes'
+	optionalVarsQuery.Where("guidelines_compliance = ?", "y").Count(&totalGuidelineCompliant)
+
+	// Count total records with guidelines_compliance data
+	optionalVarsQuery.Where("guidelines_compliance != '' AND guidelines_compliance IS NOT NULL").Count(&totalOptionalVars)
 
 	percentageGuideline := 0.0
-	if totalAntibiotics > 0 {
-		percentageGuideline = (float64(totalGuidelineCompliant) / float64(totalAntibiotics)) * 100
+	if totalOptionalVars > 0 {
+		percentageGuideline = (float64(totalGuidelineCompliant) / float64(totalOptionalVars)) * 100
 	}
+
+	// Also get total antibiotics for reference
+	var totalAntibiotics int64
+	h.getFilteredAntibioticQuery(c).Count(&totalAntibiotics)
 
 	metrics := gin.H{
 		"total_guideline_compliant":      totalGuidelineCompliant,
+		"total_optional_vars":            totalOptionalVars,
 		"total_antibiotics_prescribed":   totalAntibiotics,
 		"percentage_guideline_compliant": percentageGuideline,
 	}
@@ -803,7 +820,7 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Access antibiotics count (first choice antibiotics)
 	var accessCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(antibiotic_aware_classification) = ?", "access").
+		Where("antibiotic_aware_classification = ?", "Access").
 		Count(&accessCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Access antibiotics count"})
@@ -813,7 +830,7 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Watch antibiotics count (second choice antibiotics)
 	var watchCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(antibiotic_aware_classification) = ?", "watch").
+		Where("antibiotic_aware_classification = ?", "Watch").
 		Count(&watchCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Watch antibiotics count"})
@@ -823,7 +840,7 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 	// Get Reserve antibiotics count (last resort antibiotics)
 	var reserveCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(antibiotic_aware_classification) = ?", "reserve").
+		Where("antibiotic_aware_classification = ?", "Reserve").
 		Count(&reserveCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Reserve antibiotics count"})

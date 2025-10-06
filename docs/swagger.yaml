@@ -295,7 +295,7 @@ definitions:
       specimen_type:
         type: string
     type: object
-host: csf.health.go.ug
+host: localhost:8080
 info:
   contact: {}
   description: API for managing Point Prevalence Survey data with PostgreSQL integration
@@ -615,6 +615,289 @@ paths:
       summary: Get antibiotic statistics
       tags:
       - antibiotics
+  /api/v1/optional-vars:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of optional variables with optional filtering by prescriber
+        type, intravenous type, etc.
+      parameters:
+      - description: Filter by prescriber type
+        in: query
+        name: prescriber_type
+        type: string
+      - description: Filter by intravenous type
+        in: query
+        name: intravenous_type
+        type: string
+      - description: Filter by guidelines compliance
+        in: query
+        name: guidelines_compliance
+        type: string
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all optional variables with optional filtering
+      tags:
+      - optional-vars
+    post:
+      consumes:
+      - application/json
+      description: Create a new optional variable record with the provided data
+      parameters:
+      - description: Optional Variable data
+        in: body
+        name: optional_var
+        required: true
+        schema:
+          $ref: '#/definitions/models.OptionalVar'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.OptionalVar'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new optional variable record
+      tags:
+      - optional-vars
+  /api/v1/optional-vars/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an optional variable record by ID
+      parameters:
+      - description: Optional Variable ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete an optional variable record
+      tags:
+      - optional-vars
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific optional variable
+      parameters:
+      - description: Optional Variable ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OptionalVar'
+      summary: Get a specific optional variable by ID
+      tags:
+      - optional-vars
+    put:
+      consumes:
+      - application/json
+      description: Update an existing optional variable record by ID
+      parameters:
+      - description: Optional Variable ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated Optional Variable data
+        in: body
+        name: optional_var
+        required: true
+        schema:
+          $ref: '#/definitions/models.OptionalVar'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OptionalVar'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update an optional variable record
+      tags:
+      - optional-vars
+  /api/v1/optional-vars/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get aggregated statistics about optional variables
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get optional variables statistics
+      tags:
+      - optional-vars
+  /api/v1/optional-vars/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload multiple optional variables from a CSV file
+      parameters:
+      - description: CSV file containing optional variables data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Bulk upload optional variables from CSV
+      tags:
+      - optional-vars
   /api/v1/patients:
     get:
       consumes:

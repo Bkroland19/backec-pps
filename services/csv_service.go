@@ -284,8 +284,8 @@ func (s *CSVService) ImportIndications(file multipart.File) (*UploadResult, erro
 		rowNum := i + 2 // Account for header row
 		result.ProcessedRecords++
 
-		if len(record) < 9 {
-			errorMsg := fmt.Sprintf("Row %d: insufficient columns (expected at least 9, got %d)", rowNum, len(record))
+		if len(record) < 8 {
+			errorMsg := fmt.Sprintf("Row %d: insufficient columns (expected at least 8, got %d)", rowNum, len(record))
 			result.Errors = append(result.Errors, errorMsg)
 			result.SkippedRecords++
 			continue
@@ -371,7 +371,7 @@ func (s *CSVService) ImportOptionalVars(file multipart.File) (*UploadResult, err
 			continue
 		}
 
-		optionalVar := s.parseOptionalVarRecord(record)
+		optionalVar := s.ParseOptionalVarRecord(record)
 		if optionalVar.ID == "" {
 			errorMsg := fmt.Sprintf("Row %d: missing optional var ID", rowNum)
 			result.Errors = append(result.Errors, errorMsg)
@@ -379,33 +379,10 @@ func (s *CSVService) ImportOptionalVars(file multipart.File) (*UploadResult, err
 			continue
 		}
 
-		// Check if optional var already exists
-		var existingOptionalVar models.OptionalVar
-		err := s.db.Where("key = ?", optionalVar.ID).First(&existingOptionalVar).Error
-		if err == nil {
-			// Optional var exists, skip
-			result.SkippedRecords++
-			log.Printf("Skipping optional var %s: already exists", optionalVar.ID)
-			continue
-		} else if err != gorm.ErrRecordNotFound {
-			// Database error
-			errorMsg := fmt.Sprintf("Row %d: database error checking optional var %s: %v", rowNum, optionalVar.ID, err)
-			result.Errors = append(result.Errors, errorMsg)
-			result.SkippedRecords++
-			continue
-		}
+		// Allow duplicate keys since different details may exist for the same key
 
-		// Check if parent patient exists
-		if optionalVar.ParentKey != "" {
-			var parentPatient models.Patient
-			err := s.db.Where("key = ?", optionalVar.ParentKey).First(&parentPatient).Error
-			if err != nil {
-				errorMsg := fmt.Sprintf("Row %d: parent patient %s not found for optional var %s", rowNum, optionalVar.ParentKey, optionalVar.ID)
-				result.Errors = append(result.Errors, errorMsg)
-				result.SkippedRecords++
-				continue
-			}
-		}
+		// For optional_vars, we don't need to check for parent patient existence
+		// since parent_key is set to the same value as the key (ID)
 
 		// Create new optional var
 		if err := s.db.Create(&optionalVar).Error; err != nil {
@@ -1011,38 +988,52 @@ func (s *CSVService) parseIndicationRecord(record []string) models.Indication {
 	return indication
 }
 
-func (s *CSVService) parseOptionalVarRecord(record []string) models.OptionalVar {
+func (s *CSVService) ParseOptionalVarRecord(record []string) models.OptionalVar {
 	optionalVar := models.OptionalVar{}
 
-	// First column is the key field
+	// Column order based on CSV structure (8 columns):
+	// 0: Prescriber (should go to prescriber_type)
+	// 1: Intraveno
+	// 2: OralSwitcl (OralSwitch)
+	// 3: NumberM (Number Missed Doses)
+	// 4: MissedDo (Missed Doses Reason)
+	// 5: Guideline (Guidelines Compliance)
+	// 6: Treatmen (Treatment Type)
+	// 7: PARENT_k KEY (UUIDs, should be used for both key and parent_key)
+
+	// Get parent_key from column 7 first
+	parentKey := ""
+	if len(record) > 7 && record[7] != "" {
+		parentKey = record[7] // PARENT_k KEY
+	}
+
+	// Set key to be the same as parent_key
+	optionalVar.ID = parentKey
+	optionalVar.ParentKey = parentKey
+
+	// Map other columns
 	if len(record) > 0 && record[0] != "" {
-		optionalVar.ID = record[0]
+		optionalVar.PrescriberType = record[0] // Prescriber goes to prescriber_type
 	}
 	if len(record) > 1 && record[1] != "" {
-		optionalVar.PrescriberType = record[1]
+		optionalVar.IntravenousType = record[1] // Intraveno
 	}
 	if len(record) > 2 && record[2] != "" {
-		optionalVar.IntravenousType = record[2]
+		optionalVar.OralSwitch = record[2] // OralSwitcl
 	}
 	if len(record) > 3 && record[3] != "" {
-		optionalVar.OralSwitch = record[3]
-	}
-	if len(record) > 4 && record[4] != "" {
-		if val, err := strconv.Atoi(record[4]); err == nil {
-			optionalVar.NumberMissedDoses = val
+		if val, err := strconv.Atoi(record[3]); err == nil {
+			optionalVar.NumberMissedDoses = val // NumberM
 		}
 	}
+	if len(record) > 4 && record[4] != "" {
+		optionalVar.MissedDosesReason = record[4] // MissedDo
+	}
 	if len(record) > 5 && record[5] != "" {
-		optionalVar.MissedDosesReason = record[5]
+		optionalVar.GuidelinesCompliance = record[5] // Guideline
 	}
 	if len(record) > 6 && record[6] != "" {
-		optionalVar.GuidelinesCompliance = record[6]
-	}
-	if len(record) > 7 && record[7] != "" {
-		optionalVar.TreatmentType = record[7]
-	}
-	if len(record) > 8 && record[8] != "" {
-		optionalVar.ParentKey = record[8]
+		optionalVar.TreatmentType = record[6] // Treatmen
 	}
 
 	return optionalVar
