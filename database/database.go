@@ -29,6 +29,21 @@ func InitDB() {
 }
 
 func Migrate() {
+	// Drop constraints and recreate optional_vars table to remove primary key
+	// This allows duplicate keys with different details
+	//DB.Exec("DROP TABLE IF EXISTS optional_vars CASCADE")
+	DB.Exec(`CREATE TABLE optional_vars (
+		key VARCHAR(255),
+		prescriber_type VARCHAR(255),
+		intravenous_type VARCHAR(255),
+		oral_switch VARCHAR(255),
+		number_missed_doses INTEGER,
+		missed_doses_reason VARCHAR(255),
+		guidelines_compliance VARCHAR(255),
+		treatment_type VARCHAR(255),
+		parent_key VARCHAR(255)
+	)`)
+
 	err := DB.AutoMigrate(
 		&models.Patient{},
 		&models.Antibiotic{},
@@ -41,21 +56,6 @@ func Migrate() {
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
-
-	// Drop constraints and recreate optional_vars table to remove primary key
-	// This allows duplicate keys with different details
-	DB.Exec("DROP TABLE IF EXISTS optional_vars CASCADE")
-	DB.Exec(`CREATE TABLE optional_vars (
-		key VARCHAR(255),
-		prescriber_type VARCHAR(255),
-		intravenous_type VARCHAR(255),
-		oral_switch VARCHAR(255),
-		number_missed_doses INTEGER,
-		missed_doses_reason VARCHAR(255),
-		guidelines_compliance VARCHAR(255),
-		treatment_type VARCHAR(255),
-		parent_key VARCHAR(255)
-	)`)
 
 	log.Println("Database migration completed successfully")
 }

@@ -155,7 +155,12 @@ func (h *PPSCalculationsHandler) applyPatientFiltersToQuery(query *gorm.DB, c *g
 
 	if hasFilters {
 		// Join with patients table to filter by patient parameters
-		query = query.Joins("JOIN patients ON patients.key = " + tableName + ".parent_key")
+		// For optional_vars, use the key field instead of parent_key
+		if tableName == "optional_vars" {
+			query = query.Joins("JOIN patients ON patients.key = " + tableName + ".key")
+		} else {
+			query = query.Joins("JOIN patients ON patients.key = " + tableName + ".parent_key")
+		}
 
 		// Apply date filtering
 		startDateStr := c.Query("start_date")
@@ -223,7 +228,18 @@ func (h *PPSCalculationsHandler) getFilteredSpecimenQuery(c *gin.Context) *gorm.
 // getFilteredOptionalVarsQuery returns a query for optional_vars filtered by parent patient's parameters
 func (h *PPSCalculationsHandler) getFilteredOptionalVarsQuery(c *gin.Context) *gorm.DB {
 	query := h.db.Model(&models.OptionalVar{})
-	return h.applyPatientFiltersToQuery(query, c, "optional_vars")
+
+	// Check if any filtering parameters are provided
+	hasFilters := c.Query("start_date") != "" || c.Query("end_date") != "" ||
+		c.Query("region") != "" || c.Query("district") != "" || c.Query("subcounty") != "" ||
+		c.Query("facility") != "" || c.Query("level") != "" || c.Query("ownership") != ""
+
+	if hasFilters {
+		return h.applyPatientFiltersToQuery(query, c, "optional_vars")
+	}
+
+	// If no filters, return the base query
+	return query
 }
 
 // PPSIndicators represents all the calculated indicators
@@ -521,14 +537,23 @@ func (h *PPSCalculationsHandler) GetGuidelineMetrics(c *gin.Context) {
 	var totalGuidelineCompliant int64
 	var totalOptionalVars int64
 
-	// Get filtered optional_vars query with patient joins
-	optionalVarsQuery := h.getFilteredOptionalVarsQuery(c)
+	// Check if any filtering parameters are provided
+	hasFilters := c.Query("start_date") != "" || c.Query("end_date") != "" ||
+		c.Query("region") != "" || c.Query("district") != "" || c.Query("subcounty") != "" ||
+		c.Query("facility") != "" || c.Query("level") != "" || c.Query("ownership") != ""
 
-	// Count records where guidelines_compliance = 'yes'
-	optionalVarsQuery.Where("guidelines_compliance = ?", "y").Count(&totalGuidelineCompliant)
+	if hasFilters {
+		// Use filtered queries
+		compliantQuery := h.getFilteredOptionalVarsQuery(c)
+		compliantQuery.Where("guidelines_compliance = ?", "y").Count(&totalGuidelineCompliant)
 
-	// Count total records with guidelines_compliance data
-	optionalVarsQuery.Where("guidelines_compliance != '' AND guidelines_compliance IS NOT NULL").Count(&totalOptionalVars)
+		totalQuery := h.getFilteredOptionalVarsQuery(c)
+		totalQuery.Count(&totalOptionalVars)
+	} else {
+		// Use direct queries without filters
+		h.db.Model(&models.OptionalVar{}).Where("guidelines_compliance = ?", "y").Count(&totalGuidelineCompliant)
+		h.db.Model(&models.OptionalVar{}).Count(&totalOptionalVars)
+	}
 
 	percentageGuideline := 0.0
 	if totalOptionalVars > 0 {
