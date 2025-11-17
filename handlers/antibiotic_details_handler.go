@@ -27,7 +27,7 @@ func NewAntibioticDetailsHandler() *AntibioticDetailsHandler {
 // @Produce json
 // @Success 200 {array} models.AntibioticDetails
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details [get]
+// @Router /api/v1/antibiotic-details [get]
 func (h *AntibioticDetailsHandler) GetAntibioticDetails(c *gin.Context) {
 	var antibioticDetails []models.AntibioticDetails
 
@@ -49,7 +49,7 @@ func (h *AntibioticDetailsHandler) GetAntibioticDetails(c *gin.Context) {
 // @Success 200 {object} models.AntibioticDetails
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details/{id} [get]
+// @Router /api/v1/antibiotic-details/{id} [get]
 func (h *AntibioticDetailsHandler) GetAntibioticDetailsByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -75,7 +75,7 @@ func (h *AntibioticDetailsHandler) GetAntibioticDetailsByID(c *gin.Context) {
 // @Param parent_key path string true "Parent Key"
 // @Success 200 {array} models.AntibioticDetails
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details/parent/{parent_key} [get]
+// @Router /api/v1/antibiotic-details/parent/{parent_key} [get]
 func (h *AntibioticDetailsHandler) GetAntibioticDetailsByParentKey(c *gin.Context) {
 	parentKey := c.Param("parent_key")
 
@@ -98,7 +98,7 @@ func (h *AntibioticDetailsHandler) GetAntibioticDetailsByParentKey(c *gin.Contex
 // @Success 201 {object} models.AntibioticDetails
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details [post]
+// @Router /api/v1/antibiotic-details [post]
 func (h *AntibioticDetailsHandler) CreateAntibioticDetails(c *gin.Context) {
 	var antibioticDetails models.AntibioticDetails
 
@@ -127,7 +127,7 @@ func (h *AntibioticDetailsHandler) CreateAntibioticDetails(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details/{id} [put]
+// @Router /api/v1/antibiotic-details/{id} [put]
 func (h *AntibioticDetailsHandler) UpdateAntibioticDetails(c *gin.Context) {
 	id := c.Param("id")
 
@@ -166,7 +166,7 @@ func (h *AntibioticDetailsHandler) UpdateAntibioticDetails(c *gin.Context) {
 // @Success 204 "No Content"
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details/{id} [delete]
+// @Router /api/v1/antibiotic-details/{id} [delete]
 func (h *AntibioticDetailsHandler) DeleteAntibioticDetails(c *gin.Context) {
 	id := c.Param("id")
 
@@ -196,7 +196,7 @@ func (h *AntibioticDetailsHandler) DeleteAntibioticDetails(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /antibiotic-details/stats [get]
+// @Router /api/v1/antibiotic-details/stats [get]
 func (h *AntibioticDetailsHandler) GetAntibioticDetailsStats(c *gin.Context) {
 	var totalCount int64
 	var prescriberStats []struct {

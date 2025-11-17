@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/antibiotic-details": {
+        "/api/v1/antibiotic-details": {
             "get": {
                 "description": "Retrieve all antibiotic details from the database",
                 "consumes": [
@@ -100,7 +100,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/antibiotic-details/parent/{parent_key}": {
+        "/api/v1/antibiotic-details/parent/{parent_key}": {
             "get": {
                 "description": "Retrieve antibiotic details for a specific parent patient",
                 "consumes": [
@@ -144,7 +144,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/antibiotic-details/stats": {
+        "/api/v1/antibiotic-details/stats": {
             "get": {
                 "description": "Retrieve statistics about antibiotic details in the database",
                 "consumes": [
@@ -177,7 +177,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/antibiotic-details/{id}": {
+        "/api/v1/antibiotic-details/{id}": {
             "get": {
                 "description": "Retrieve a specific antibiotic detail by its ID",
                 "consumes": [
@@ -1514,6 +1514,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get appropriate diagnosis metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1795,6 +1845,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get injectable antibiotic metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1911,6 +2011,56 @@ const docTemplate = `{
                     "pps-calculations"
                 ],
                 "summary": "Get missed dose metrics",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start date for filtering (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End date for filtering (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Region for filtering",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "District for filtering",
+                        "name": "district",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Subcounty for filtering",
+                        "name": "subcounty",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Facility for filtering",
+                        "name": "facility",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Level of care for filtering",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ownership for filtering",
+                        "name": "ownership",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

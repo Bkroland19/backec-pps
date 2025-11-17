@@ -454,6 +454,14 @@ func (h *PPSCalculationsHandler) GetBasicMetrics(c *gin.Context) {
 // @Tags pps-calculations
 // @Accept json
 // @Produce json
+// @Param start_date query string false "Start date for filtering (YYYY-MM-DD)"
+// @Param end_date query string false "End date for filtering (YYYY-MM-DD)"
+// @Param region query string false "Region for filtering"
+// @Param district query string false "District for filtering"
+// @Param subcounty query string false "Subcounty for filtering"
+// @Param facility query string false "Facility for filtering"
+// @Param level query string false "Level of care for filtering"
+// @Param ownership query string false "Ownership for filtering"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/pps/injectable-metrics [get]
@@ -580,6 +588,14 @@ func (h *PPSCalculationsHandler) GetGuidelineMetrics(c *gin.Context) {
 // @Tags pps-calculations
 // @Accept json
 // @Produce json
+// @Param start_date query string false "Start date for filtering (YYYY-MM-DD)"
+// @Param end_date query string false "End date for filtering (YYYY-MM-DD)"
+// @Param region query string false "Region for filtering"
+// @Param district query string false "District for filtering"
+// @Param subcounty query string false "Subcounty for filtering"
+// @Param facility query string false "Facility for filtering"
+// @Param level query string false "Level of care for filtering"
+// @Param ownership query string false "Ownership for filtering"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/pps/diagnosis-metrics [get]
@@ -651,6 +667,14 @@ func (h *PPSCalculationsHandler) GetCultureMetrics(c *gin.Context) {
 // @Tags pps-calculations
 // @Accept json
 // @Produce json
+// @Param start_date query string false "Start date for filtering (YYYY-MM-DD)"
+// @Param end_date query string false "End date for filtering (YYYY-MM-DD)"
+// @Param region query string false "Region for filtering"
+// @Param district query string false "District for filtering"
+// @Param subcounty query string false "Subcounty for filtering"
+// @Param facility query string false "Facility for filtering"
+// @Param level query string false "Level of care for filtering"
+// @Param ownership query string false "Ownership for filtering"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
 // @Router /api/v1/pps/missed-dose-metrics [get]

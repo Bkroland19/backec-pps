@@ -302,7 +302,7 @@ info:
   title: Point Prevalence Survey API
   version: "1.0"
 paths:
-  /antibiotic-details:
+  /api/v1/antibiotic-details:
     get:
       consumes:
       - application/json
@@ -358,7 +358,7 @@ paths:
       summary: Create antibiotic detail
       tags:
       - antibiotic-details
-  /antibiotic-details/{id}:
+  /api/v1/antibiotic-details/{id}:
     delete:
       consumes:
       - application/json
@@ -465,7 +465,7 @@ paths:
       summary: Update antibiotic detail
       tags:
       - antibiotic-details
-  /antibiotic-details/parent/{parent_key}:
+  /api/v1/antibiotic-details/parent/{parent_key}:
     get:
       consumes:
       - application/json
@@ -494,7 +494,7 @@ paths:
       summary: Get antibiotic details by parent key
       tags:
       - antibiotic-details
-  /antibiotic-details/stats:
+  /api/v1/antibiotic-details/stats:
     get:
       consumes:
       - application/json
@@ -1299,6 +1299,39 @@ paths:
       consumes:
       - application/json
       description: Calculate appropriate diagnosis metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1486,6 +1519,39 @@ paths:
       consumes:
       - application/json
       description: Calculate injectable antibiotic prescription metrics
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
@@ -1564,6 +1630,39 @@ paths:
       consumes:
       - application/json
       description: Calculate missed dose metrics and reasons
+      parameters:
+      - description: Start date for filtering (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date for filtering (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Region for filtering
+        in: query
+        name: region
+        type: string
+      - description: District for filtering
+        in: query
+        name: district
+        type: string
+      - description: Subcounty for filtering
+        in: query
+        name: subcounty
+        type: string
+      - description: Facility for filtering
+        in: query
+        name: facility
+        type: string
+      - description: Level of care for filtering
+        in: query
+        name: level
+        type: string
+      - description: Ownership for filtering
+        in: query
+        name: ownership
+        type: string
       produces:
       - application/json
       responses:
