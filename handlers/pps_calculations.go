@@ -866,30 +866,30 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 		return
 	}
 
-	// Get Access antibiotics count (first choice antibiotics)
+	// Get Access antibiotics count (first choice antibiotics) - case-insensitive
 	var accessCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("antibiotic_aware_classification = ?", "Access").
+		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "access").
 		Count(&accessCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Access antibiotics count"})
 		return
 	}
 
-	// Get Watch antibiotics count (second choice antibiotics)
+	// Get Watch antibiotics count (second choice antibiotics) - case-insensitive
 	var watchCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("antibiotic_aware_classification = ?", "Watch").
+		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "watch").
 		Count(&watchCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Watch antibiotics count"})
 		return
 	}
 
-	// Get Reserve antibiotics count (last resort antibiotics)
+	// Get Reserve antibiotics count (last resort antibiotics) - case-insensitive
 	var reserveCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("antibiotic_aware_classification = ?", "Reserve").
+		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "reserve").
 		Count(&reserveCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Reserve antibiotics count"})
