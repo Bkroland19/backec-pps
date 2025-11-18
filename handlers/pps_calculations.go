@@ -866,30 +866,30 @@ func (h *PPSCalculationsHandler) GetAWaReCategorization(c *gin.Context) {
 		return
 	}
 
-	// Get Access antibiotics count (first choice antibiotics) - case-insensitive
+	// Get Access antibiotics count (first choice antibiotics) - case-insensitive, handles NULL and empty strings
 	var accessCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "access").
+		Where("antibiotic_aware_classification IS NOT NULL AND antibiotic_aware_classification != '' AND LOWER(TRIM(antibiotic_aware_classification)) = ?", "access").
 		Count(&accessCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Access antibiotics count"})
 		return
 	}
 
-	// Get Watch antibiotics count (second choice antibiotics) - case-insensitive
+	// Get Watch antibiotics count (second choice antibiotics) - case-insensitive, handles NULL and empty strings
 	var watchCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "watch").
+		Where("antibiotic_aware_classification IS NOT NULL AND antibiotic_aware_classification != '' AND LOWER(TRIM(antibiotic_aware_classification)) = ?", "watch").
 		Count(&watchCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Watch antibiotics count"})
 		return
 	}
 
-	// Get Reserve antibiotics count (last resort antibiotics) - case-insensitive
+	// Get Reserve antibiotics count (last resort antibiotics) - case-insensitive, handles NULL and empty strings
 	var reserveCount int64
 	err = h.getFilteredAntibioticQuery(c).
-		Where("LOWER(TRIM(antibiotic_aware_classification)) = ?", "reserve").
+		Where("antibiotic_aware_classification IS NOT NULL AND antibiotic_aware_classification != '' AND LOWER(TRIM(antibiotic_aware_classification)) = ?", "reserve").
 		Count(&reserveCount).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get Reserve antibiotics count"})
