@@ -295,7 +295,7 @@ definitions:
       specimen_type:
         type: string
     type: object
-host: localhost:8080
+host: csf.health.go.ug
 info:
   contact: {}
   description: API for managing Point Prevalence Survey data with PostgreSQL integration

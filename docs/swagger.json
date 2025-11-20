@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "csf.health.go.ug",
     "basePath": "/",
     "paths": {
         "api/v1/antibiotic-details": {
