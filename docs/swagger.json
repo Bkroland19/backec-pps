@@ -9,7 +9,7 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/api/v1/antibiotic-details": {
+        "api/v1/antibiotic-details": {
             "get": {
                 "description": "Retrieve all antibiotic details from the database",
                 "consumes": [
@@ -94,7 +94,7 @@
                 }
             }
         },
-        "/api/v1/antibiotic-details/parent/{parent_key}": {
+        "api/v1/antibiotic-details/parent/{parent_key}": {
             "get": {
                 "description": "Retrieve antibiotic details for a specific parent patient",
                 "consumes": [
@@ -138,7 +138,7 @@
                 }
             }
         },
-        "/api/v1/antibiotic-details/stats": {
+        "api/v1/antibiotic-details/stats": {
             "get": {
                 "description": "Retrieve statistics about antibiotic details in the database",
                 "consumes": [
@@ -171,7 +171,7 @@
                 }
             }
         },
-        "/api/v1/antibiotic-details/{id}": {
+        "api/v1/antibiotic-details/{id}": {
             "get": {
                 "description": "Retrieve a specific antibiotic detail by its ID",
                 "consumes": [
@@ -332,7 +332,7 @@
                 }
             }
         },
-        "/api/v1/antibiotics": {
+        "api/v1/antibiotics": {
             "get": {
                 "description": "Get a list of antibiotics with optional filtering by class, classification, etc.",
                 "consumes": [
@@ -390,7 +390,7 @@
                 }
             }
         },
-        "/api/v1/antibiotics/patient/{patient_id}": {
+        "api/v1/antibiotics/patient/{patient_id}": {
             "get": {
                 "description": "Get detailed antibiotic usage information for a specific patient",
                 "consumes": [
@@ -423,7 +423,7 @@
                 }
             }
         },
-        "/api/v1/antibiotics/stats": {
+        "api/v1/antibiotics/stats": {
             "get": {
                 "description": "Get aggregated statistics about antibiotics usage",
                 "consumes": [
@@ -447,7 +447,7 @@
                 }
             }
         },
-        "/api/v1/antibiotics/{id}": {
+        "api/v1/antibiotics/{id}": {
             "get": {
                 "description": "Get detailed information about a specific antibiotic",
                 "consumes": [
@@ -479,7 +479,7 @@
                 }
             }
         },
-        "/api/v1/optional-vars": {
+        "api/v1/optional-vars": {
             "get": {
                 "description": "Get a list of optional variables with optional filtering by prescriber type, intravenous type, etc.",
                 "consumes": [
@@ -903,7 +903,7 @@
                 }
             }
         },
-        "/api/v1/patients": {
+        "api/v1/patients": {
             "get": {
                 "description": "Get a list of patients with optional filtering by region, district, facility, etc.",
                 "consumes": [
@@ -967,7 +967,7 @@
                 }
             }
         },
-        "/api/v1/patients/stats": {
+        "api/v1/patients/stats": {
             "get": {
                 "description": "Get aggregated statistics about patients",
                 "consumes": [
@@ -991,7 +991,7 @@
                 }
             }
         },
-        "/api/v1/patients/{id}": {
+        "api/v1/patients/{id}": {
             "get": {
                 "description": "Get detailed information about a specific patient including all related data",
                 "consumes": [
@@ -1023,7 +1023,7 @@
                 }
             }
         },
-        "/api/v1/patients/{id}/antibiotics": {
+        "api/v1/patients/{id}/antibiotics": {
             "get": {
                 "description": "Get all antibiotics associated with a specific patient",
                 "consumes": [
@@ -1058,7 +1058,7 @@
                 }
             }
         },
-        "/api/v1/patients/{id}/indications": {
+        "api/v1/patients/{id}/indications": {
             "get": {
                 "description": "Get all indications associated with a specific patient",
                 "consumes": [
@@ -1093,7 +1093,7 @@
                 }
             }
         },
-        "/api/v1/patients/{id}/optional-vars": {
+        "api/v1/patients/{id}/optional-vars": {
             "get": {
                 "description": "Get all optional variables associated with a specific patient",
                 "consumes": [
@@ -1128,7 +1128,7 @@
                 }
             }
         },
-        "/api/v1/patients/{id}/specimens": {
+        "api/v1/patients/{id}/specimens": {
             "get": {
                 "description": "Get all specimens associated with a specific patient",
                 "consumes": [
@@ -1163,7 +1163,7 @@
                 }
             }
         },
-        "/api/v1/pps/appropriate-diagnosis": {
+        "api/v1/pps/appropriate-diagnosis": {
             "get": {
                 "description": "Percentage = count of \"yes\" responses divided by total responses (yes/no) from indications.reason_in_notes",
                 "consumes": [
@@ -1246,7 +1246,7 @@
                 }
             }
         },
-        "/api/v1/pps/aware-categorization": {
+        "api/v1/pps/aware-categorization": {
             "get": {
                 "description": "Calculate the distribution of antibiotics based on WHO AWaRe classification (Access, Watch, Reserve, Unclassified) with optional filtering",
                 "consumes": [
@@ -1508,56 +1508,6 @@
                     "pps-calculations"
                 ],
                 "summary": "Get appropriate diagnosis metrics",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Start date for filtering (YYYY-MM-DD)",
-                        "name": "start_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "End date for filtering (YYYY-MM-DD)",
-                        "name": "end_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Region for filtering",
-                        "name": "region",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "District for filtering",
-                        "name": "district",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Subcounty for filtering",
-                        "name": "subcounty",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Facility for filtering",
-                        "name": "facility",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Level of care for filtering",
-                        "name": "level",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Ownership for filtering",
-                        "name": "ownership",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1839,56 +1789,6 @@
                     "pps-calculations"
                 ],
                 "summary": "Get injectable antibiotic metrics",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Start date for filtering (YYYY-MM-DD)",
-                        "name": "start_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "End date for filtering (YYYY-MM-DD)",
-                        "name": "end_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Region for filtering",
-                        "name": "region",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "District for filtering",
-                        "name": "district",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Subcounty for filtering",
-                        "name": "subcounty",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Facility for filtering",
-                        "name": "facility",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Level of care for filtering",
-                        "name": "level",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Ownership for filtering",
-                        "name": "ownership",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2005,56 +1905,6 @@
                     "pps-calculations"
                 ],
                 "summary": "Get missed dose metrics",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Start date for filtering (YYYY-MM-DD)",
-                        "name": "start_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "End date for filtering (YYYY-MM-DD)",
-                        "name": "end_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Region for filtering",
-                        "name": "region",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "District for filtering",
-                        "name": "district",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Subcounty for filtering",
-                        "name": "subcounty",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Facility for filtering",
-                        "name": "facility",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Level of care for filtering",
-                        "name": "level",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Ownership for filtering",
-                        "name": "ownership",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
